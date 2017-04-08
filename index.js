@@ -41,7 +41,7 @@ app.get('/webhook/', function (req, res) {
 	res.send('Error, wrong token')
 })
 
-app.get('/callback/', function(req, res) {
+app.get('/webhook/', function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
