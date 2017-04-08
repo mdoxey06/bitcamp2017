@@ -35,7 +35,7 @@ app.listen(app.get('port'), function() {
 const token = "EAAStcXwYvj0BADPAa2AVETYZCQvaU1MPWWEeZBCocXcOF0vtoGNxkam2E4ZCNkvKZCGL6lDz7yuZAjgObDTtIhu9WViV3chfCVRdSZA4wr1W4vrXYuUxMzsnopZCmHmNcR5h7omYr43W28v1gON7h1vS20eAga2c7vGFnNbTLSyfAZDZD"
 
 // WEBHOOK API
-app.get('/webhook', function(req, res) {
+app.get('/webhook/', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === token) {
     console.log("Validating webhook");
