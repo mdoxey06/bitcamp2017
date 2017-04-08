@@ -53,13 +53,13 @@ app.post('/webhook/', function (req, res) {
 		    else 
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 	    }
-	    sendTextMessage(sender, "before")
+	    // sendTextMessage(sender, "before")
 	    console.log(event.postback)
 	    if (event.postback) {
 	    		console.log("hello world")
 	      	    sendTextMessage(sender, "Postback received!")
 	    }
-	    sendTextMessage(sender, "after")
+	    // sendTextMessage(sender, "after")
     }
     res.sendStatus(200)
 })
