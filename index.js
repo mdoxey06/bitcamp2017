@@ -155,7 +155,7 @@ function spotifyLogin(sender) {
 	    qs: {access_token:token},
 	    method: 'POST',
 	    json: {
-		    recipient: {id:sender},
+		    recipient: {id:"example_token"},
 		    message: messageData,
 	    }
     }, function(error, response, body) {
