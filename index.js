@@ -45,7 +45,7 @@ app.post('/webhook/', function (req, res) {
 	    if (event.message && event.message.text) {
 		    let text = event.message.text.toLowerCase()
 		    if (text === "login") {
-		    	spotifyTest(sender)
+		    	spotifyLogin(sender)
 		    }
 		    else if (text === "generic") {
 		    	sendGenericMessage(sender)
@@ -54,27 +54,47 @@ app.post('/webhook/', function (req, res) {
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 	    }
 	    if (event.postback) {
-	    		console.log("hello world")
-	      	    sendTextMessage(sender, "Postback received!")
+	    		let text = JSON.stringify(event.postback)
+	      	    sendTextMessage(sender, "Postback received: " + text)
 	    }
     }
     res.sendStatus(200)
 })
 
-function spotifyTest(sender) {
-	let messageData = {text:"login to spotify"}
-	request({
+function spotifyLogin(sender) {
+	let messageData = {
+	    "attachment": {
+		    "type": "template",
+		    "payload": {
+				"template_type": "button",
+				"text":"To use this bot, you must login to your Spotify account using the link below"
+			    "buttons": [{
+					"title": "loginButton",
+				    "buttons": [{
+					    "type": "Log In",
+					    "url": "https://www.spotify.com",
+					    "title": "web url"
+				    }, {
+					    "type": "postback",
+					    "title": "Postback",
+					    "payload": "Logged in to Spotify",
+				    }],
+			    }]
+		    }
+	    }
+    }
+    request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
 	    qs: {access_token:token},
 	    method: 'POST',
-		json: {
+	    json: {
 		    recipient: {id:sender},
-			message: messageData,
-		}
-	}, function(error, response, body) {
-		if (error) {
+		    message: messageData,
+	    }
+    }, function(error, response, body) {
+	    if (error) {
 		    console.log('Error sending messages: ', error)
-		} else if (response.body.error) {
+	    } else if (response.body.error) {
 		    console.log('Error: ', response.body.error)
 	    }
     })
