@@ -121,8 +121,11 @@ app.post('/webhook/', function (req, res) {
 		    else if (text === "generic") {
 		    	sendGenericMessage(sender)
   		    }
-  		    else if (text === "body") {
-  		    	sendTextMessage(sender, "Body: " + bodyText)
+  		    else if (text === "user") {
+  		    	if (userObj)
+  		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
+  		    	else
+  		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
 		    else
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
