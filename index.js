@@ -54,25 +54,20 @@ app.get('/callback/', function(req, res) {
   // var state = req.query.state || null;
   // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  // if (state === null || state !== storedState) {
-  //   res.redirect('/#' +
-  //     querystring.stringify({
-  //       error: 'state_mismatch'
-  //     }));
-  // } else {
-  //   res.clearCookie(stateKey);
-  //   var authOptions = {
-  //     url: 'https://accounts.spotify.com/api/token',
-  //     form: {
-  //       code: code,
-  //       redirect_uri: redirect_uri,
-  //       grant_type: 'authorization_code'
-  //     },
-  //     headers: {
-  //       'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-  //     },
-  //     json: true
-  //   };
+    res.clearCookie(stateKey);
+    var authOptions = {
+	      url: 'https://accounts.spotify.com/api/token',
+	      form: {
+	        code: code,
+	        redirect_uri: redirect_uri,
+	        grant_type: 'authorization_code'
+	      },
+	      headers: {
+	        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+	      },
+	      json: true
+  	}
+    
 
     request.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
