@@ -5,6 +5,8 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
+var var_dump = require('var_dump.js');
+
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/webhook/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -33,21 +35,6 @@ app.get('/', function (req, res) {
 
 const token = "EAAStcXwYvj0BAKnITGnR45LR1OZCab5rSZCODn9NCXbKLuGDAXpfAViVsNSv9PGaz5WUYJWscIUfu3kUbJA5y2AlapY2pnVLtOVUOZCkyPAHYPB8C6D4PlXNRSFZCAgMZAGSSuT2GbyzudfAkaPlq95nhmmphY38X6eiZBJ0BcfgZDZD"
 
-function dump(obj) {
-    var out = '';
-    for (var i in obj) {
-        out += i + ": " + obj[i] + "\n";
-    }
-
-    console.log(out);
-
-    // or, if you wanted to avoid alerts...
-
-    // var pre = document.createElement('pre');
-    // pre.innerHTML = out;
-    // document.body.appendChild(pre)
-}
-
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'example_token') {
@@ -56,6 +43,8 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['qs.access_token'] === "token") {
 		res.send("success!")
 	}
+
+	var_dump.init(res);  	
 	res.send(var_dump(req.query))
 })
 
