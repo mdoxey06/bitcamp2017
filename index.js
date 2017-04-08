@@ -5,10 +5,9 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
-var var_dump = require('var_dump.js');
 
 
-var redirectUri = 'https://safe-badlands-68520.herokuapp.com/webhook/',
+var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
@@ -43,10 +42,8 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['qs.access_token'] === "token") {
 		res.send("success!")
 	}
-
-	var_dump.init(res);  	
-	res.send(var_dump(req.query))
-})
+	res.send("Error, wrong token")
+});
 
 app.get('/webhook/', function(req, res) {
 
