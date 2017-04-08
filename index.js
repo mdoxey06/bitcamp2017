@@ -6,6 +6,7 @@ const request = require('request')
 const app = express()
 var querystring = require('qs');
 const SpotifyWebApi = require('spotify-web-api-node');
+const senderID = ""
 
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
@@ -103,14 +104,16 @@ app.get('/callback/', function(req, res) {
   // }
 
 
+  sendTextMessage(senderID, "before Welcome " + body["email"])
   res.redirect("https://www.messenger.com/t/414205672270256");
+  sendTextMessage(senderID, "after Welcome " + body["email"])
 });
 
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 	    let event = req.body.entry[0].messaging[i]
-	    let sender = event.sender.id
+	    senderID = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text.toLowerCase()
 		    if (text === "login") {
@@ -175,8 +178,6 @@ function spotifyLogin(sender) {
 		    console.log('Error: ', response.body.error)
 	    }
     })
-
-    sendTextMessage(sender, "nice")
 }
 
 function sendTextMessage(sender, text) {
