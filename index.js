@@ -6,7 +6,7 @@ const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
 
-var redirectUri = 'https://safe-badlands-68520.herokuapp.com/webhook/',
+var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
