@@ -47,7 +47,6 @@ app.get('/webhook/', function (req, res) {
 });
 
 app.get('/callback/', function(req, res) {
-	res.send("success!");
   // your application requests refresh and access tokens
   // after checking the state parameter
   code = req.query.code || null;
@@ -102,6 +101,9 @@ app.get('/callback/', function(req, res) {
   //     }
   //   });
   // }
+
+  
+  res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
 app.post('/webhook/', function (req, res) {
