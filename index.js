@@ -68,18 +68,18 @@ function spotifyLogin(sender) {
 		    "payload": {
 				"template_type": "button",
 				"text":"To use this bot, you must login to your Spotify account using the link below",
-			    "buttons": [{
-					"title": "loginButton",
-				    "buttons": [{
+			    "buttons": [
+			    	{
 					    "type": "web_url",
 					    "url": "https://www.spotify.com",
 					    "title": "Log In"
-				    }, {
+					},
+				   	{
 					    "type": "postback",
 					    "title": "Postback",
 					    "payload": "Logged in to Spotify",
-				    }],
-			    }]
+				    }
+			    ]
 		    }
 	    }
     }
