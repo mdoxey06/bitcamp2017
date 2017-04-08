@@ -152,10 +152,10 @@ function spotifyLogin(sender) {
     }
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:token},
+	    qs: {access_token:"example_token"},
 	    method: 'POST',
 	    json: {
-		    recipient: {id:"example_token"},
+		    recipient: {id:sender},
 		    message: messageData,
 	    }
     }, function(error, response, body) {
