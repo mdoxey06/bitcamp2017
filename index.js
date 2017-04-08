@@ -102,6 +102,7 @@ app.get('/callback/', function(req, res) {
 
 
   // sendTextMessage(senderID, "before Welcome " + body["email"])
+  status = true
   res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
@@ -172,7 +173,6 @@ function spotifyLogin(sender) {
 		    console.log('Error: ', response.body.error)
 	    }
     })
-    status = true
 }
 
 function sendTextMessage(sender, text) {
