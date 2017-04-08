@@ -26,7 +26,7 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
 
-const token = "EAAStcXwYvj0BADJEOXT0OcxvXRzvvn0QVeRHe9aUmCZCfrXKPXmP2u6lE2qJPnTQ6OLvbUOEbSwqG5EkssPbJIxEVuLXwoCf8YveWByOa8chPCyZAHj8y0mKqvr3bmCz8QixU7nqilCcHayZBuJEZCZCpTfaKtZCpwZAKM0PgYWsgZDZD"
+const token = "EAAStcXwYvj0BAN1FVamUke5i0ILSuQ0UY95ALzcUZB5riwT2QkALlWZA6QFLgAJVZABsOuDzOBfA2gSVp0iy0aiYeBF383npimE4yc3ve8GJm1j1HRgiCaAdHJNgoICgTzX0MpPmP2gjED0LK3sa6ljebHyZCXZBlRnhCrCdHhwZDZD"
 
 // WEBHOOK API
 app.get('/webhook/', function(req, res) {
