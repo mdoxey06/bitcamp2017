@@ -6,7 +6,7 @@ const request = require('request')
 const app = express()
 var querystring = require('qs');
 const SpotifyWebApi = require('spotify-web-api-node');
-const senderID = ""
+var senderID = ""
 
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
