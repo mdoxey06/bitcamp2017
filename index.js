@@ -94,7 +94,7 @@ app.post('/webhook/', function (req, res) {
 		    if (text === 'login') {
 		    	spotifyLogin(sender)
 		    } 
-		    else if (text === 'userInfo') {
+		    else if (text === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
@@ -105,7 +105,6 @@ app.post('/webhook/', function (req, res) {
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
-		    	sendTextMessage(sender, 'AAAAAAAAAAAAAAAA')
 		    }
 	    }
 	    if (event.postback) {
