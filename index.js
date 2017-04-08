@@ -105,6 +105,7 @@ app.post('/webhook/', function (req, res) {
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
+		    	sendTextMessage(sender, 'AAAAAAAAAAAAAAAA')
 		    }
 	    }
 	    if (event.postback) {
