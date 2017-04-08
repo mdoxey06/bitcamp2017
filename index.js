@@ -123,8 +123,10 @@ app.post('/webhook/', function (req, res) {
   		    else if (text === "user") {
   		    	sendTextMessage(sender, "Logged in: " + code)
   		    }
-		    else 
+		    else {
+		    	console.log("Spitting back text")
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+		    }
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
