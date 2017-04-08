@@ -50,7 +50,7 @@ app.get('/callback/', function(req, res) {
 	res.send("success!");
   // your application requests refresh and access tokens
   // after checking the state parameter
-  var code = req.query.code || null;
+  code = req.query.code || null;
   // var state = req.query.state || null;
   // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
