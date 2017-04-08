@@ -44,10 +44,10 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
-		    sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-		    spotifyTest(sender, text)
 		    if (text === "login")
 		    	spotifyTest(sender, text)
+		    else 
+		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 	    }
     }
     res.sendStatus(200)
