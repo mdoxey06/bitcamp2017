@@ -18,6 +18,8 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri : redirectUri,
 });
 
+var bodyText = "";
+
 var code = "";
 
 app.set('port', (process.env.PORT || 5000))
@@ -83,7 +85,7 @@ app.get('/callback/', function(req, res) {
 
 	        // use the access token to access the Spotify Web API
 	        request.get(options, function(error, response, body) {
-	          console.log(JSON.stringify(body));
+	          body = stringify(bodyText);
 	        });
     	}
 	});
@@ -123,10 +125,12 @@ app.post('/webhook/', function (req, res) {
   		    else if (text === "user") {
   		    	sendTextMessage(sender, "Logged in: " + code)
   		    }
-		    else {
-		    	console.log("Spitting back text")
+  		    else if (text === "body") {
+  		    	sendTextMessage(sender, "Body: " + bodyText)
+  		    }
+		    else
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-		    }
+		    
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
