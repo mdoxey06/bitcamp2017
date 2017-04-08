@@ -47,7 +47,7 @@ app.get('/callback/', function(req, res) {
 	console.log("REACHED THE CALLBACK")
   // your application requests refresh and access tokens
   // after checking the state parameter
-  code = req.query.code || null;
+  var code = req.query.code || null;
   // var state = req.query.state || null;
   // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
