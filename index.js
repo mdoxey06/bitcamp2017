@@ -71,9 +71,9 @@ function spotifyLogin(sender) {
 			    "buttons": [{
 					"title": "loginButton",
 				    "buttons": [{
-					    "type": "Log In",
+					    "type": "web_url",
 					    "url": "https://www.spotify.com",
-					    "title": "web url"
+					    "title": "Log In"
 				    }, {
 					    "type": "postback",
 					    "title": "Postback",
