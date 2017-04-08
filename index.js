@@ -104,7 +104,7 @@ app.get('/callback/', function(req, res) {
   // }
 
 
-  sendTextMessage(senderID, "before Welcome " + body["email"])
+  // sendTextMessage(senderID, "before Welcome " + body["email"])
   res.redirect("https://www.messenger.com/t/414205672270256");
   sendTextMessage(senderID, "after Welcome " + body["email"])
 });
