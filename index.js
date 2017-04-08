@@ -69,7 +69,6 @@ function spotifyLogin(sender) {
 	  '?response_type=code' +
 	  '&client_id=' + spotifyApi.clientId + '&scope=' + encodeURIComponent(scopes) +
 	  '&redirect_uri=' + encodeURIComponent(spotifyApi.redirectUri);
-	});
 
 	let messageData = {
 	    "attachment": {
