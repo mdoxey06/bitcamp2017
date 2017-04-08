@@ -67,7 +67,7 @@ function spotifyLogin(sender) {
 		    "type": "template",
 		    "payload": {
 				"template_type": "button",
-				"text":"To use this bot, you must login to your Spotify account using the link below"
+				"text":"To use this bot, you must login to your Spotify account using the link below",
 			    "buttons": [{
 					"title": "loginButton",
 				    "buttons": [{
