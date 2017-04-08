@@ -33,6 +33,21 @@ app.get('/', function (req, res) {
 
 const token = "EAAStcXwYvj0BAKnITGnR45LR1OZCab5rSZCODn9NCXbKLuGDAXpfAViVsNSv9PGaz5WUYJWscIUfu3kUbJA5y2AlapY2pnVLtOVUOZCkyPAHYPB8C6D4PlXNRSFZCAgMZAGSSuT2GbyzudfAkaPlq95nhmmphY38X6eiZBJ0BcfgZDZD"
 
+function dump(obj) {
+    var out = '';
+    for (var i in obj) {
+        out += i + ": " + obj[i] + "\n";
+    }
+
+    alert(out);
+
+    // or, if you wanted to avoid alerts...
+
+    var pre = document.createElement('pre');
+    pre.innerHTML = out;
+    document.body.appendChild(pre)
+}
+
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'example_token') {
@@ -41,7 +56,7 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['qs.access_token'] === "token") {
 		res.send("success!")
 	}
-	res.send('Error, wrong token')
+	res.send(dump(req.query))
 })
 
 app.get('/webhook/', function(req, res) {
