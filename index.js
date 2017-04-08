@@ -6,7 +6,6 @@ const request = require('request')
 const app = express()
 var querystring = require('qs');
 const SpotifyWebApi = require('spotify-web-api-node');
-var status = false
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -43,15 +42,11 @@ app.get('/webhook/', function (req, res) {
 	res.send("Error, wrong token")
 });
 
+// for Spotify login
 app.get('/callback/', function(req, res) {
-	console.log("REACHED THE CALLBACK")
   // your application requests refresh and access tokens
   // after checking the state parameter
-  var code = req.query.code || null;
-  // var state = req.query.state || null;
-  // var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-    //res.clearCookie(stateKey);
+  	var code = req.query.code || null;
     var authOptions = {
 	      url: 'https://accounts.spotify.com/api/token',
 	      form: {
@@ -65,7 +60,6 @@ app.get('/callback/', function(req, res) {
 	      json: true
   	}
     
-
     request.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
 
@@ -85,50 +79,32 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
-  //       // we can also pass the token to the browser to make requests from there
-  //       res.redirect('/#' +
-  //         querystring.stringify({
-  //           access_token: access_token,
-  //           refresh_token: refresh_token
-  //         }));
-  //     } else {
-  //       res.redirect('/#' +
-  //         querystring.stringify({
-  //           error: 'invalid_token'
-  //         }));
-  //     }
-  //   });
-  // }
-
-
-  // sendTextMessage(senderID, "before Welcome " + body["email"])
-  status = true
-  res.redirect("https://www.messenger.com/t/414205672270256");
+	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
+// After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-		    let text = event.message.text.toLowerCase()
-		    if (text === "login") {
+		    let text = event.message.text.toLowerCase().trim()
+		    if (text === 'login') {
 		    	spotifyLogin(sender)
-		    	if (status)
-		    		sendTextMessage(sender, "Welcome " + userObj["email"])
-		    }
-		    else if (text === "generic") {
-		    	sendGenericMessage(sender)
-  		    }
-  		    else if (text === "user") {
+		    } 
+		    else if (text === 'userInfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-		    else
-		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+  		    else if (text === 'help') {
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName>\n-requestSong <songTitle> <artistName>")
+  		    }
+		    else {
+		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
+		    }
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
