@@ -47,6 +47,7 @@ app.get('/webhook/', function (req, res) {
 });
 
 app.get('/callback/', function(req, res) {
+	console.log("REACHED THE CALLBACK")
   // your application requests refresh and access tokens
   // after checking the state parameter
   code = req.query.code || null;
