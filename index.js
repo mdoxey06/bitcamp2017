@@ -4,6 +4,18 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+const SpotifyWebApi = require('spotify-web-api-node');
+
+var spotifyApi = new SpotifyWebApi({
+  clientId : 'f13b2795eee8443a9eef41050f0054a2',
+  clientSecret : '927c7af2338f4a7eb371884a436446a7',
+  redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/'
+});
+
+spotifyApi.setAccessToken('example_token');
+
+
+
 
 app.set('port', (process.env.PORT || 5000))
 
