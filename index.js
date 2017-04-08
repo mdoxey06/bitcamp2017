@@ -5,14 +5,14 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
-var scope = 'user-read-private user-read-email';
 
-// var spotifyApi = new SpotifyWebApi({
-//   clientId : 'f13b2795eee8443a9eef41050f0054a2',
-//   clientSecret : '927c7af2338f4a7eb371884a436446a7',
-//   redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/',
-//   scope: 'user-read-private user-read-email'
-// });
+var spotifyApi = new SpotifyWebApi({
+  clientId : 'f13b2795eee8443a9eef41050f0054a2',
+  clientSecret : '927c7af2338f4a7eb371884a436446a7',
+  redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/',
+  scope: 'user-read-private user-read-email'
+});
+
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -62,6 +62,15 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
+	app.get('/login', function(req, res) {
+	var scopes = 'user-read-private user-read-email';
+	res.redirect('https://accounts.spotify.com/authorize' + 
+	  '?response_type=code' +
+	  '&client_id=' + my_client_id +
+	  (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
+	  '&redirect_uri=' + encodeURIComponent(redirect_uri));
+	});
+
 	let messageData = {
 	    "attachment": {
 		    "type": "template",
@@ -73,12 +82,7 @@ function spotifyLogin(sender) {
 					    "type": "web_url",
 					    "url": "https://www.spotify.com",
 					    "title": "Log In"
-					},
-				   	{
-					    "type": "postback",
-					    "title": "Postback",
-					    "payload": "Logged in to Spotify",
-				    }
+					}
 			    ]
 		    }
 	    }
