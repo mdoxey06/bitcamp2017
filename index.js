@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
+var querystring = require('qs');
 const SpotifyWebApi = require('spotify-web-api-node');
 
 
@@ -17,7 +18,7 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri : redirectUri,
 });
 
-
+var code = "";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -49,8 +50,7 @@ app.get('/callback/', function(req, res) {
 
   // your application requests refresh and access tokens
   // after checking the state parameter
-  res.send("success callback!")
-  // var code = req.query.code || null;
+  var code = req.query.code || null;
   // var state = req.query.state || null;
   // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
@@ -74,22 +74,22 @@ app.get('/callback/', function(req, res) {
   //     json: true
   //   };
 
-  //   request.post(authOptions, function(error, response, body) {
-  //     if (!error && response.statusCode === 200) {
+    request.post(authOptions, function(error, response, body) {
+      if (!error && response.statusCode === 200) {
 
-  //       var access_token = body.access_token,
-  //           refresh_token = body.refresh_token;
+        var access_token = body.access_token,
+            refresh_token = body.refresh_token;
 
-  //       var options = {
-  //         url: 'https://api.spotify.com/v1/me',
-  //         headers: { 'Authorization': 'Bearer ' + access_token },
-  //         json: true
-  //       };
+        var options = {
+          url: 'https://api.spotify.com/v1/me',
+          headers: { 'Authorization': 'Bearer ' + access_token },
+          json: true
+        };
 
-  //       // use the access token to access the Spotify Web API
-  //       request.get(options, function(error, response, body) {
-  //         console.log(body);
-  //       });
+        // use the access token to access the Spotify Web API
+        request.get(options, function(error, response, body) {
+          console.log(body);
+        });
 
   //       // we can also pass the token to the browser to make requests from there
   //       res.redirect('/#' +
@@ -119,6 +119,9 @@ app.post('/webhook/', function (req, res) {
 		    }
 		    else if (text === "generic") {
 		    	sendGenericMessage(sender)
+  		    }
+  		    else if (text === "user") {
+  		    	sendTextMessage(sender, "Logged in: " + code)
   		    }
 		    else 
 		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
