@@ -42,9 +42,6 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'example_token') {
 		res.send(req.query['hub.challenge'])
 	}
-	if (req.query['qs.access_token'] === "token") {
-		res.send("success webhook!")
-	}
 	res.send("Error, wrong token")
 });
 
@@ -178,6 +175,8 @@ function spotifyLogin(sender) {
 		    console.log('Error: ', response.body.error)
 	    }
     })
+
+    sendTextMessage(sender, "nice")
 }
 
 function sendTextMessage(sender, text) {
