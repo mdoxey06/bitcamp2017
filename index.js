@@ -33,7 +33,7 @@ app.get('/', function (req, res) {
 	res.send(req.query['hub.challenge'])
 })
 
-const token = "EAAStcXwYvj0BAKnITGnR45LR1OZCab5rSZCODn9NCXbKLuGDAXpfAViVsNSv9PGaz5WUYJWscIUfu3kUbJA5y2AlapY2pnVLtOVUOZCkyPAHYPB8C6D4PlXNRSFZCAgMZAGSSuT2GbyzudfAkaPlq95nhmmphY38X6eiZBJ0BcfgZDZD"
+const token = "EAAStcXwYvj0BANT3zJEGr1Iq9yDJaQuGyOpoSDUPyjW7HtGHNVc8groZBWqpzSQzaZBqxJNBnhEr4aehFweZCHuQZA5vdHcajZBOCw7ftiqROmua4VbtgZCcpq7uqlkwwbu6neA4fJZCzZCfTEoxXAeiDw8vML8vawl2PlZBezTLu8wZDZD"
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
