@@ -6,13 +6,15 @@ const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
 
+var redirectUri = 'https://safe-badlands-68520.herokuapp.com/webhook/',
+    clientId = 'f13b2795eee8443a9eef41050f0054a2',
+    clientSecret = '927c7af2338f4a7eb371884a436446a7';
+
 var spotifyApi = new SpotifyWebApi({
-  clientId : 'f13b2795eee8443a9eef41050f0054a2',
-  clientSecret : '927c7af2338f4a7eb371884a436446a7',
-  redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/',
-  scope: 'user-read-private user-read-email'
+  clientId : clientId,
+  clientSecret : clientSecret,
+  redirectUri : redirectUri,
 });
-const scopes = 'user-read-private user-read-email';
 
 
 
@@ -67,8 +69,8 @@ function spotifyLogin(sender) {
 	var scopes = 'user-read-private user-read-email';
 	var loginURL = 'https://accounts.spotify.com/authorize' + 
 	  '?response_type=code' +
-	  '&client_id=' + spotifyApi.clientId + '&scope=' + encodeURIComponent(scopes) +
-	  '&redirect_uri=' + encodeURIComponent(spotifyApi.redirectUri);
+	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
+	  '&redirect_uri=' + encodeURIComponent(redirectUri);
 
 	let messageData = {
 	    "attachment": {
