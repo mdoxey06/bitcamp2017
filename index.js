@@ -31,10 +31,12 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
 
+const token = "EAAStcXwYvj0BADPAa2AVETYZCQvaU1MPWWEeZBCocXcOF0vtoGNxkam2E4ZCNkvKZCGL6lDz7yuZAjgObDTtIhu9WViV3chfCVRdSZA4wr1W4vrXYuUxMzsnopZCmHmNcR5h7omYr43W28v1gON7h1vS20eAga2c7vGFnNbTLSyfAZDZD"
+
 // WEBHOOK API
 app.get('/webhook', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === <VERIFY_TOKEN>) {
+      req.query['hub.verify_token'] === token) {
     console.log("Validating webhook");
     res.status(200).send(req.query['hub.challenge']);
   } else {
@@ -43,7 +45,6 @@ app.get('/webhook', function(req, res) {
   }  
 });
 
-const token = "EAAStcXwYvj0BADPAa2AVETYZCQvaU1MPWWEeZBCocXcOF0vtoGNxkam2E4ZCNkvKZCGL6lDz7yuZAjgObDTtIhu9WViV3chfCVRdSZA4wr1W4vrXYuUxMzsnopZCmHmNcR5h7omYr43W28v1gON7h1vS20eAga2c7vGFnNbTLSyfAZDZD"
 
 
 app.post('/webhook', function (req, res) {
