@@ -56,7 +56,7 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['qs.access_token'] === "token") {
 		res.send("success!")
 	}
-	res.send(dump(req.query))
+	res.send(var_dump(req.query))
 })
 
 app.get('/webhook/', function(req, res) {
