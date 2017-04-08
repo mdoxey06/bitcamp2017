@@ -6,8 +6,7 @@ const request = require('request')
 const app = express()
 var querystring = require('qs');
 const SpotifyWebApi = require('spotify-web-api-node');
-var senderID = ""
-
+var status = false
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -19,9 +18,7 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri : redirectUri,
 });
 
-var bodyText = "";
-
-var code = "";
+var userObj = "";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -83,7 +80,7 @@ app.get('/callback/', function(req, res) {
 
 	        // use the access token to access the Spotify Web API
 	        request.get(options, function(error, response, body) {
-	          bodyText = JSON.stringify(body);
+	          userObj = body;
 	        });
     	}
 	});
@@ -106,35 +103,32 @@ app.get('/callback/', function(req, res) {
 
   // sendTextMessage(senderID, "before Welcome " + body["email"])
   res.redirect("https://www.messenger.com/t/414205672270256");
-  sendTextMessage(senderID, "after Welcome " + body["email"])
 });
 
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
     for (let i = 0; i < messaging_events.length; i++) {
 	    let event = req.body.entry[0].messaging[i]
-	    senderID = event.sender.id
+	    sender = event.sender.id
 	    if (event.message && event.message.text) {
 		    let text = event.message.text.toLowerCase()
 		    if (text === "login") {
-		    	spotifyLogin(senderID)
-		    	sendTextMessage(senderID, "welcome")
+		    	spotifyLogin(sender)
+		    	if (status)
+		    		sendTextMessage(sender, "Welcome " + userObj["email"])
 		    }
 		    else if (text === "generic") {
-		    	sendGenericMessage(senderID)
-  		    }
-  		    else if (text === "user") {
-  		    	sendTextMessage(senderID, "Logged in: " + code)
+		    	sendGenericMessage(sender)
   		    }
   		    else if (text === "body") {
-  		    	sendTextMessage(senderID, "Body: " + bodyText)
+  		    	sendTextMessage(sender, "Body: " + bodyText)
   		    }
 		    else
-		    	sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
+		    	sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
-	      	    sendTextMessage(senderID, "Postback received: " + text)
+	      	    sendTextMessage(sender, "Postback received: " + text)
 	    }
     }
     res.sendStatus(200)
@@ -178,6 +172,7 @@ function spotifyLogin(sender) {
 		    console.log('Error: ', response.body.error)
 	    }
     })
+    status = true
 }
 
 function sendTextMessage(sender, text) {
