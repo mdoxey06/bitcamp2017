@@ -19,12 +19,7 @@ app.get('/', function (req, res) {
 })
 
 // for Facebook verification
-app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === 'example_token') {
-		res.send(req.query['hub.challenge'])
-	}
-	res.send('Error, wrong token')
-})
+
 
 // Spin up the server
 app.listen(app.get('port'), function() {
@@ -35,6 +30,13 @@ const token = "EAAStcXwYvj0BADJEOXT0OcxvXRzvvn0QVeRHe9aUmCZCfrXKPXmP2u6lE2qJPnTQ
 
 // WEBHOOK API
 app.get('/webhook/', function(req, res) {
+
+	if (req.query['hub.verify_token'] === 'example_token') {
+		res.send(req.query['hub.challenge'])
+	}
+	res.send('Error, wrong token')
+
+
   if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === token) {
     console.log("Validating webhook");
