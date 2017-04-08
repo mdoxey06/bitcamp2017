@@ -6,7 +6,6 @@ const request = require('request')
 const app = express()
 
 app.set('port', (process.env.PORT || 5000))
-app.use(bodyParser.json())
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
@@ -32,7 +31,7 @@ app.listen(app.get('port'), function() {
 	console.log('running on port', app.get('port'))
 })
 
-const token = "EAAStcXwYvj0BADPAa2AVETYZCQvaU1MPWWEeZBCocXcOF0vtoGNxkam2E4ZCNkvKZCGL6lDz7yuZAjgObDTtIhu9WViV3chfCVRdSZA4wr1W4vrXYuUxMzsnopZCmHmNcR5h7omYr43W28v1gON7h1vS20eAga2c7vGFnNbTLSyfAZDZD"
+const token = "EAAStcXwYvj0BADJEOXT0OcxvXRzvvn0QVeRHe9aUmCZCfrXKPXmP2u6lE2qJPnTQ6OLvbUOEbSwqG5EkssPbJIxEVuLXwoCf8YveWByOa8chPCyZAHj8y0mKqvr3bmCz8QixU7nqilCcHayZBuJEZCZCpTfaKtZCpwZAKM0PgYWsgZDZD"
 
 // WEBHOOK API
 app.get('/webhook/', function(req, res) {
