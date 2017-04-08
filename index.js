@@ -5,17 +5,14 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 const SpotifyWebApi = require('spotify-web-api-node');
+var scope = 'user-read-private user-read-email';
 
 var spotifyApi = new SpotifyWebApi({
   clientId : 'f13b2795eee8443a9eef41050f0054a2',
   clientSecret : '927c7af2338f4a7eb371884a436446a7',
-  redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/'
+  redirectUri : 'https://safe-badlands-68520.herokuapp.com/webhook/',
+  scope: 'user-read-private user-read-email'
 });
-
-spotifyApi.setAccessToken('example_token');
-
-
-
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -48,10 +45,32 @@ app.post('/webhook/', function (req, res) {
 	    if (event.message && event.message.text) {
 		    let text = event.message.text
 		    sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+		    spotifyTest(sender, text)
+		    if (text === "login")
+		    	spotifyTest(sender, text)
 	    }
     }
     res.sendStatus(200)
 })
+
+function spotifyTest(sender, text) {
+	let messageData = {text:"login to spotify"}
+	request({
+	    url: 'https://graph.facebook.com/v2.6/me/messages',
+	    qs: {access_token:token},
+	    method: 'POST',
+		json: {
+		    recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+		    console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+		    console.log('Error: ', response.body.error)
+	    }
+    })
+}
 
 function sendTextMessage(sender, text) {
     let messageData = { text:text }
