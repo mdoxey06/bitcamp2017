@@ -58,11 +58,11 @@ app.get('/callback/', function(req, res) {
 	      url: 'https://accounts.spotify.com/api/token',
 	      form: {
 	        code: code,
-	        redirect_uri: redirect_uri,
+	        redirect_uri: redirectUri,
 	        grant_type: 'authorization_code'
 	      },
 	      headers: {
-	        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+	        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
 	      },
 	      json: true
   	}
@@ -103,7 +103,7 @@ app.get('/callback/', function(req, res) {
   // }
 
 
-  //res.redirect("https://www.messenger.com/t/414205672270256");
+  res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
 app.post('/webhook/', function (req, res) {
