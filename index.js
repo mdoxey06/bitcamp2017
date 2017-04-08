@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const request = require('request')
 const app = express()
 var querystring = require('qs');
+var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
@@ -100,7 +101,7 @@ app.post('/webhook/', function (req, res) {
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
   		    else if (text === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName> <password>\n-joinParty <partyName> <password>\n-requestSong <songTitle> <artistName>")
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName> <password>\n-joinParty <partyName> <password>\n-requestSong <songTitle> <artistName>\n")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
