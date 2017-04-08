@@ -38,6 +38,9 @@ app.get('/webhook/', function (req, res) {
 	if (req.query['hub.verify_token'] === 'example_token') {
 		res.send(req.query['hub.challenge'])
 	}
+	if (req.query['qs.access_token'] === "token") {
+		res.send("success!")
+	}
 	res.send('Error, wrong token')
 })
 
@@ -152,7 +155,7 @@ function spotifyLogin(sender) {
     }
     request({
 	    url: 'https://graph.facebook.com/v2.6/me/messages',
-	    qs: {access_token:"example_token"},
+	    qs: {access_token:token},
 	    method: 'POST',
 	    json: {
 		    recipient: {id:sender},
