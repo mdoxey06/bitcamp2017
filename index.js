@@ -100,7 +100,7 @@ app.post('/webhook/', function (req, res) {
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
   		    else if (text === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName>\n-requestSong <songTitle> <artistName>")
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName> <password>\n-joinParty <partyName> <password>\n-requestSong <songTitle> <artistName>")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
