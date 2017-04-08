@@ -118,6 +118,7 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text.toLowerCase()
 		    if (text === "login") {
 		    	spotifyLogin(senderID)
+		    	sendTextMessage(senderID, "welcome")
 		    }
 		    else if (text === "generic") {
 		    	sendGenericMessage(senderID)
@@ -130,7 +131,6 @@ app.post('/webhook/', function (req, res) {
   		    }
 		    else
 		    	sendTextMessage(senderID, "Text received, echo: " + text.substring(0, 200))
-		    
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
