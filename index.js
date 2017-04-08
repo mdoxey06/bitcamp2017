@@ -53,7 +53,7 @@ app.get('/callback/', function(req, res) {
   // var state = req.query.state || null;
   // var storedState = req.cookies ? req.cookies[stateKey] : null;
 
-    res.clearCookie(stateKey);
+    //res.clearCookie(stateKey);
     var authOptions = {
 	      url: 'https://accounts.spotify.com/api/token',
 	      form: {
@@ -102,8 +102,8 @@ app.get('/callback/', function(req, res) {
   //   });
   // }
 
-  
-  res.redirect("https://www.messenger.com/t/414205672270256");
+
+  //res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
 app.post('/webhook/', function (req, res) {
