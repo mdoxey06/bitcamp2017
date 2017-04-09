@@ -83,9 +83,9 @@ app.get('/callback/', function(req, res) {
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
-var createPartyRE = /^createParty \"(.+)\" \"(.+)\"$/
-var joinParty = /^joinParty \"(.+)\" \"(.+)\"$/
-var requestSong = /^requestSong \"(.+)\" \"(.+)\"$/
+var createPartyRE = /^createpparty \"(.+)\" \"(.+)\"$/
+var joinParty = /^joinpparty \"(.+)\" \"(.+)\"$/
+var requestSong = /^requestspong \"(.+)\" \"(.+)\"$/
 var found = [];
 
 // After user commands
