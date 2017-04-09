@@ -136,8 +136,8 @@ app.post('/webhook/', function (req, res) {
   		    	        	    
   		    	        	    request.post(authOptions, function(error, response, body) {
   		    	        		        var options = {
-  		    	        		          url: 'https://api.spotify.com/v1/users/' + userObj + '/playlists',
-  		    	        		          headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json' },
+  		    	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
+  		    	        		          headers: { 'Authorization': 'Bearer ' + body.access_token, 'Content-Type': 'application/json' },
   		    	        		          body: {'name': 'playlist', 'public': 'false'},
   		    	        		          json: true
   		    	        		        };
