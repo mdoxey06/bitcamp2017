@@ -128,7 +128,6 @@ app.post('/webhook/', function (req, res) {
   		    	request.get(options, function(error, response, body) {
   		    	  var playlistId = body.id;
   		    	  sendTextMessage(sender, "Playlist: " + JSON.stringify(body));
-  		    	  process.exit();
   		    	});
 
   		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
