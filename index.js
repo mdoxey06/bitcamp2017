@@ -125,7 +125,7 @@ app.post('/webhook/', function (req, res) {
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
   		    	              .then(function(data) {
-  		    	                sendTextMessage(sender, JSON.stringify(data))
+  		    	                sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
   		    	              }, function(err) {
   		    	                console.log('Something went wrong!', err);
   		    	              });
