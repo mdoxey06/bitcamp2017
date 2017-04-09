@@ -178,7 +178,7 @@ function spotifyLogin(sender) {
 	//   '?response_type=code' +
 	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
 	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
-	loginURL = "/auth/spotify"
+	var loginURL = "/auth/spotify"
 
 	let messageData = {
 	    "attachment": {
