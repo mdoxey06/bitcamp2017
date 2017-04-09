@@ -111,13 +111,15 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = lowerCaseText.match(createPartyRE)) {
+  		    else if (found = =lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
 
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
+
+  		    	sendTextMessage(sender, "Auth: " + access_token)
 
   		    	var playlistOptions = {
   		    	           url: 'https://api.spotify.com/v1/users/' + playlistName + '/playlists',
@@ -130,6 +132,7 @@ app.post('/webhook/', function (req, res) {
 
   		    	       request.post(playlistOptions, function(err, resp, body){
   		    	           sendTextMessage(sender, JSON.stringify(body))
+  		    	           resp.end()
   		    	       });
 
   		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
