@@ -123,7 +123,7 @@ app.post('/webhook/', function (req, res) {
   		    	        .then(function(data) {
   		    	        	sendTextMessage(sender, "hello");
   		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data));
+  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body));
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
   		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
