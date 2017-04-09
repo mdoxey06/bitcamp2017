@@ -118,12 +118,14 @@ app.post('/webhook/', function (req, res) {
 
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
-
+  		    	console.log ('BEFORE CREDENTIALS')
   		    	spotifyApi.clientCredentialsGrant()
   		    	        .then(function(data) {
   		    	        	sendTextMessage(sender, "hello");
+  		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
   		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body));
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
+  		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
   		    	              .then(function(data) {
   		    	                sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
