@@ -7,12 +7,12 @@ const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
-var jq = require('jquery')
 var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
 var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
+
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -119,21 +119,18 @@ app.post('/webhook/', function (req, res) {
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
 
-  		    	jq.ajax({
-  		    	       url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-  		    	       method: "POST",
-  		    	       data: {
-  		    	         name: playlistName,
-  		    	         public: "false"
-  		    	       },
-  		    	       headers: {
-  		    	         'Authorization': 'Bearer ' + access_token,
-  		    	         'Content-Type': 'application/json'
-  		    	       },
-  		    	       success: function(response) {
-  		    	         console.log(response);
+  		    	var playlistOptions = {
+  		    	           url: 'https://api.spotify.com/v1/users/' + playlistName + '/playlists',
+  		    	           headers: {
+  		    	               'Authorization': 'Bearer ' + access_token,
+  		    	           },
+  		    	           body: JSON.stringify({'name': playlistName, 'public': false}),
+  		    	           json: true
   		    	       }
-  		    	});
+
+  		    	       request.post(playlistOptions, function(err, resp, body){
+  		    	           sendTextMessage(sender, JSON.stringify(body))
+  		    	       });
 
   		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
