@@ -107,19 +107,26 @@ app.post('/webhook/', function (req, res) {
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
 
-  		    	spotifyApi.getMe()
+  		    	spotifyApi.searchTracks('track:Alright artist:Kendrick Lamar')
   		    	  .then(function(data) {
-  		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
+  		    	    console.log('Search tracks by "Alright" in the track name and "Kendrick Lamar" in the artist name', data.body);
   		    	  }, function(err) {
-  		    	    console.log('Something went wrong getMe!', err);
+  		    	    console.log('Something went wrong!', err);
   		    	  });
 
-  		    	spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
-  		    	  .then(function(data) {
-  		    	    sendTextMessage(sender, "Made playlist " + playlistName)
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong createPlaylist!', err);
-  		    	  });
+  		    	// spotifyApi.getMe()
+  		    	//   .then(function(data) {
+  		    	//     sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
+  		    	//   }, function(err) {
+  		    	//     console.log('Something went wrong getMe!', err);
+  		    	//   });
+
+  		    	// spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
+  		    	//   .then(function(data) {
+  		    	//     sendTextMessage(sender, "Made playlist " + playlistName)
+  		    	//   }, function(err) {
+  		    	//     console.log('Something went wrong createPlaylist!', err);
+  		    	//   });
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
