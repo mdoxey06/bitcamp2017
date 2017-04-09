@@ -43,3 +43,5 @@ method.addRequest = function(newRequest) {
 method.getFirstRequest = function() {
 	return this._requests.shift();
 };
+
+module.exports = Party;

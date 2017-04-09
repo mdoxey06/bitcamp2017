@@ -98,10 +98,11 @@ passport.use(new SpotifyStrategy({
     callbackURL: "https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/"
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ spotifyId: profile.id }, function (err, user) {
-    	console.log("found user!")
-      return done(err, user);
-    });
+  	console.log(JSON.stringify(profile))
+    // User.findOrCreate({ spotifyId: profile.id }, function (err, user) {
+    // 	console.log("found user!")
+    //   	return done(err, user);
+    // });
   }
 ));
 
