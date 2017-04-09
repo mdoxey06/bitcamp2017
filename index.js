@@ -127,7 +127,7 @@ app.post('/webhook/', function (req, res) {
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
   		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
-  		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
+  		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : true })
   		    	              .then(function(data) {
   		    	                sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
   		    	              }, function(err) {
@@ -155,7 +155,7 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming playlist-modify';
+	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming playlist-modify playlist-modify-public';
 	var loginURL = 'https://accounts.spotify.com/authorize' + 
 	  '?response_type=code' +
 	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
