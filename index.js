@@ -120,7 +120,7 @@ app.post('/webhook/', function (req, res) {
   		    	var strJSON = JSON.stringify(jsonData);
 
   		    	var playlistOptions = {
-  		    	           url: 'https://api.spotify.com/v1/users/' + userName + '/playlists',
+  		    	           url: 'https://api.spotify.com/v1/users/' + userObj.id + '/playlists',
   		    	           headers: {
   		    	               'Authorization': 'Bearer ' + access_token,
   		    	           },
