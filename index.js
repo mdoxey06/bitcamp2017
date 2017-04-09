@@ -114,12 +114,14 @@ app.post('/webhook/', function (req, res) {
   		    	sendTextMessage(sender, JSON.stringify(userObj));
   		    	sendTextMessage(sender, "username: " + username);
 
-  		    	// spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
-  		    	//   .then(function(data) {
-  		    	//     console.log('Created playlist!');
-  		    	//   }, function(err) {
-  		    	//     console.log('Something went wrong!', err);
-  		    	//   });
+  		    	var playlistName = partyName + " Playlist";
+
+  		    	spotifyApi.createPlaylist(username, playlistName, { 'public' : false })
+  		    	  .then(function(data) {
+  		    	    console.log('Created playlist!');
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong!', err);
+  		    	  });
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
