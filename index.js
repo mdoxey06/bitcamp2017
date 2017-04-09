@@ -178,7 +178,7 @@ function spotifyLogin(sender) {
 	//   '?response_type=code' +
 	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
 	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
-	var loginURL = "/auth/spotify"
+	var loginURL = "https://safe-badlands-68520.herokuapp.com/auth/spotify"
 
 	let messageData = {
 	    "attachment": {
