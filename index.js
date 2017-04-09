@@ -120,15 +120,15 @@ app.post('/webhook/', function (req, res) {
   		    	  .then(function(data) {
   		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
   		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
+  		    	    console.log('Something went wrong getMe!', err);
   		    	  });
 
 
-  		    	spotifyApi.createPlaylist(username, playlistName, { 'public' : false })
+  		    	spotifyApi.createPlaylist('mdoxeyumd', playlistName, { 'public' : false })
   		    	  .then(function(data) {
   		    	    sendTextMessage(sender, "Made playlist " + playlistName)
   		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
+  		    	    console.log('Something went wrong createPlaylist!', err);
   		    	  });
   		    }
   		    else if (lowerCaseText === 'help') {
