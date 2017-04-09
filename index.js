@@ -100,7 +100,7 @@ app.post('/webhook/', function (req, res) {
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 	    	let text = event.message.text;
-		    let lowercaseText = text.toLowerCase().trim()
+		    let lowercaseText = text.toLowerCase().trim();
 		    if (lowercaseText === 'login') {
 		    	spotifyLogin(sender)
 		    }
@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (lowercaseText.match(createPartyRE)) {
+  		    else if (found = lowercaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
