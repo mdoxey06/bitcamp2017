@@ -20,7 +20,7 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri : redirectUri,
 });
 
-var userObj = "";
+var user = "";
 
 app.set('port', (process.env.PORT || 5000))
 app.use(passport.initialize());
@@ -62,7 +62,7 @@ passport.use(new SpotifyStrategy({
     callbackURL: "https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/"
   },
   function(accessToken, refreshToken, profile, done) {
-  	console.log(profile.id)
+  	user = profile.id;
   	return done("", profile.id);
   }
 ));
@@ -105,22 +105,17 @@ app.post('/webhook/', function (req, res) {
   		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
-
-  		    	// var username = userObj["id"];
-  		    	// sendTextMessage(sender, JSON.stringify(userObj));
-  		    	// sendTextMessage(sender, "username: " + username);
-
   		    	var playlistName = partyName + " Playlist";
 
-  		    	spotifyApi.getMe()
-  		    	  .then(function(data) {
-  		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong getMe!', err);
-  		    	  });
+  		    	// spotifyApi.getMe()
+  		    	//   .then(function(data) {
+  		    	//     sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
+  		    	//   }, function(err) {
+  		    	//     console.log('Something went wrong getMe!', err);
+  		    	//   });
 
 
-  		    	spotifyApi.createPlaylist('mdoxeyumd', playlistName, { 'public' : false })
+  		    	spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
   		    	  .then(function(data) {
   		    	    sendTextMessage(sender, "Made playlist " + playlistName)
   		    	  }, function(err) {
