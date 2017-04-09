@@ -127,7 +127,7 @@ app.post('/webhook/', function (req, res) {
   		    	// use the access token to access the Spotify Web API
   		    	request.post(options, function(error, response, body) {
   		    	  var playlistId = body.id;
-  		    	  sendTextMessage(sender, "Playlist: " + playlistId);
+  		    	  sendTextMessage(sender, "Playlist: " + JSON.stringify(body));
   		    	});
 
   		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
