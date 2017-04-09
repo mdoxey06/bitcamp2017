@@ -3,7 +3,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const passport = require('passport')
+const passport = require('passport-spotify')
 const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
@@ -45,49 +45,68 @@ app.get('/webhook/', function (req, res) {
 });
 
 // for Spotify login
-app.get('/callback/', function(req, res) {
-  // your application requests refresh and access tokens
-  // after checking the state parameter
-  	var code = req.query.code || null;
-    var authOptions = {
-	      url: 'https://accounts.spotify.com/api/token',
-	      form: {
-	        code: code,
-	        redirect_uri: redirectUri,
-	        grant_type: 'authorization_code'
-	      },
-	      headers: {
-	        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
-	      },
-	      json: true
-  	}
+// app.get('/callback/', function(req, res) {
+//   // your application requests refresh and access tokens
+//   // after checking the state parameter
+//   	var code = req.query.code || null;
+//     var authOptions = {
+// 	      url: 'https://accounts.spotify.com/api/token',
+// 	      form: {
+// 	        code: code,
+// 	        redirect_uri: redirectUri,
+// 	        grant_type: 'authorization_code'
+// 	      },
+// 	      headers: {
+// 	        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
+// 	      },
+// 	      json: true
+//   	}
     
-    request.post(authOptions, function(error, response, body) {
-      	if (!error && response.statusCode === 200) {
+//     request.post(authOptions, function(error, response, body) {
+//       	if (!error && response.statusCode === 200) {
 
-	        var access_token = body.access_token,
-	            refresh_token = body.refresh_token;
+// 	        var access_token = body.access_token,
+// 	            refresh_token = body.refresh_token;
 
-	        var options = {
-	          url: 'https://api.spotify.com/v1/me',
-	          headers: { 'Authorization': 'Bearer ' + access_token },
-	          json: true
-	        };
+// 	        var options = {
+// 	          url: 'https://api.spotify.com/v1/me',
+// 	          headers: { 'Authorization': 'Bearer ' + access_token },
+// 	          json: true
+// 	        };
 
-	        // use the access token to access the Spotify Web API
-	        request.get(options, function(error, response, body) {
-	          userObj = body;
-	        });
-    	}
-	});
+// 	        // use the access token to access the Spotify Web API
+// 	        request.get(options, function(error, response, body) {
+// 	          userObj = body;
+// 	        });
+//     	}
+// 	});
 
-	res.redirect("https://www.messenger.com/t/414205672270256");
-});
+// 	res.redirect("https://www.messenger.com/t/414205672270256");
+// });
+passport.use(new SpotifyStrategy({
+    clientID: clientId,
+    clientSecret: clientSecret,
+    callbackURL: "https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate({ spotifyId: profile.id }, function (err, user) {
+    	console.log("found user!")
+      return done(err, user);
+    });
+  }
+));
 
 app.get('/auth/spotify', passport.authenticate('spotify', 
 	{scope: ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming'], showDialog: true}),
 	function(req, res) {
 	});
+
+app.get('/auth/spotify/callback',
+  passport.authenticate('spotify', { failureRedirect: '/auth/spotify' }),
+  function(req, res) {
+    // Successful authentication, redirect home. 
+    res.redirect('https://www.messenger.com/t/414205672270256');
+  });
 
 var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
 var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
@@ -153,11 +172,12 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming';
-	var loginURL = 'https://accounts.spotify.com/authorize' + 
-	  '?response_type=code' +
-	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
-	  '&redirect_uri=' + encodeURIComponent(redirectUri);
+	// var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming';
+	// var loginURL = 'https://accounts.spotify.com/authorize' + 
+	//   '?response_type=code' +
+	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
+	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
+	loginURL = "/auth/spotify"
 
 	let messageData = {
 	    "attachment": {
