@@ -133,7 +133,7 @@ app.post('/webhook/', function (req, res) {
   		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
   		    	sendTextMessage(sender, "Party created!");
   		    }
-  		    else if (lowercaseText === 'help') {
+  		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
