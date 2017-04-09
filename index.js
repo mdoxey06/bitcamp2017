@@ -127,7 +127,7 @@ app.post('/webhook/', function (req, res) {
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.setCredentials({
   		    	              'accessToken' : data.body['access_token'],
-  		    	              'refreshToken' : data.body['refresh_token']
+  		    	              'refreshToken' : data.body['refresh_token'],
   		    	              'redirectUri' : redirectUri,
   		    	              'clientId ' : clientId,
   		    	              'clientSecret' : clientSecret
