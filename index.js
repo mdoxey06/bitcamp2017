@@ -119,18 +119,18 @@ app.post('/webhook/', function (req, res) {
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
 
-  		    	var options = {
-  		    	  url: 'https://api.spotify.com/v1/users/' + userObj.id + '/playlists',
-  		    	  headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'},
-  		    	  data: jsonData,
-  		    	  json: true
-  		    	};
+  		    	var playlistOptions = {
+  		    	           url: 'https://api.spotify.com/v1/users/' + userName + '/playlists',
+  		    	           headers: {
+  		    	               'Authorization': 'Bearer ' + access_token,
+  		    	           },
+  		    	           body: JSON.stringify({name: playlistName, public: false}),
+  		    	           json: true
+  		    	       }
 
-  		    	// use the access token to access the Spotify Web API
-  		    	request.post(options, function(error, response, body) {
-  		    	  var playlistId= body.id;
-  		    	  sendTextMessage(sender, "ID: " + JSON.stringify(body));
-  		    	});
+  		    	       request.post(playlistOptions, function(err, resp, body){
+  		    	           sendTextMessage(sender, JSON.stringify(body))
+  		    	       });
 
   		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
