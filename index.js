@@ -86,6 +86,7 @@ app.get('/callback/', function(req, res) {
 var createPartyRE = /^createParty \"(.+)\" \"(.+)\"$/
 var joinParty = /^joinParty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestSong \"(.+)\" \"(.+)\"$/
+var found = [];
 
 // After user commands
 app.post('/webhook/', function (req, res) {
@@ -104,7 +105,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (var found = text.match(createPartyRE)) {
+  		    else if (found = text.match(createPartyRE)) {
   		    	sendTextMessage(sender, "username: " + found[0] + "\npassword: " + found[1]);
   		    }
   		    else if (text === 'help') {
