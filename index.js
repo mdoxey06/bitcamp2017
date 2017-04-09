@@ -104,6 +104,7 @@ app.post('/webhook/', function (req, res) {
 	    if (event.message && event.message.text) {
 	    	let text = event.message.text;
 		    let lowerCaseText = text.toLowerCase().trim();
+		    if (lowerCaseText === 'login') {
 		    	spotifyLogin(sender)
 		    	while (!status) {}
 		    	sendTextMessage (sender, "Welcome, " + userObj['id'] + "!")
