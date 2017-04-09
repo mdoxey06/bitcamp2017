@@ -118,22 +118,50 @@ app.post('/webhook/', function (req, res) {
 
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
+
+
+  		    	// In case you get a chance to look at this later: 
+  		    	// I tried to use the clientCredentialsGrant to generate another access_token
+  		    	// and then within that, use the createPlaylist method -- ran into a 403 error or something
+  		    	// then I tried to do the post method we tried yesterday -- ran into an UnhandledPromiseRejectionWarning
+  		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
+
   		    	console.log ('BEFORE CREDENTIALS')
   		    	spotifyApi.clientCredentialsGrant(access_token)
-  		    	        .then(function(data) {  
-  		    	        	console.log ('IN CREDENTIALS')		
-  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body))  	        	    
-	        		        var options = {
-	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-	        		          headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json' },
-	        		          body: {'name': 'playlist', 'public': 'false'},
-	        		          json: true
-	        		        };
+  		    	        .then(function(data) {
+  		    	        	/* ***************** METHOD 1 ******************* */
+  		    	        	// sendTextMessage(sender, "hello");
+  		    	        	// console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
+  		    	        	// sendTextMessage(sender, "data: " + JSON.stringify(data.body));
+  		    	         //    spotifyApi.setAccessToken(data.body['access_token']);
+  		    	         //    spotifyApi.setRefreshToken(data.body['refresh_token']);
+  		    	         //    console.log ('IN CREDENTIALS AFTER SET ACCESSS')
+  		    	         //    spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : true })
+  		    	         //      .then(function(data) {
+  		    	         //        sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
+  		    	         //      }, function(err) {
+  		    	         //        console.log('Something went wrong!', err);
+  		    	         //      });
 
-	        		        // use the access token to access the Spotify Web API
-	        		        request.post(options, function(error, response, body) {
-	        		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
-	        		        }).then(function() {console.log("success")}).catch(function() {console.log("failure")});
+
+
+						/* **************** METHOD 2 ******************* */
+
+  		    	        access_token = data.body.access_token,
+  		    	        refresh_token = data.body.refresh_token;
+
+		    	        sendTextMessage(sender, "data: " + JSON.stringify(data.body))  	        	    
+	    		        var options = {
+	    		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
+	    		          headers: { 'Authorization': 'Bearer ' + data.body.access_token, 'Content-Type': 'application/json' },
+	    		          body: {'name': 'playlist', 'public': 'false'},
+	    		          json: true
+	    		        };
+	    		        
+	    		        // use the access token to access the Spotify Web API
+	    		        request.post(options, function(error, response, body) {
+	    		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
+	    		        }).then(function() {console.log("success")}).catch(function() {console.log("failure")});
   		    	        }, function(err) {
   		    	            console.log('Something went wrong when retrieving an access token', err);
   		    	        });
