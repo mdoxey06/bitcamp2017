@@ -121,10 +121,10 @@ app.post('/webhook/', function (req, res) {
   		    	console.log ('BEFORE CREDENTIALS')
   		    	spotifyApi.clientCredentialsGrant(access_token)
   		    	        .then(function(data) {  
-  		    	        	console.log ('BEFORE CREDENTIALS')		    	        	    
+  		    	        	console.log ('IN CREDENTIALS')		    	        	    
 	        		        var options = {
 	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-	        		          headers: { 'Authorization': 'Bearer ' + body.access_token, 'Content-Type': 'application/json' },
+	        		          headers: { 'Authorization': 'Bearer ' + data.access_token, 'Content-Type': 'application/json' },
 	        		          body: {'name': 'playlist', 'public': 'false'},
 	        		          json: true
 	        		        };
