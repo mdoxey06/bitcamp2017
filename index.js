@@ -119,12 +119,12 @@ app.post('/webhook/', function (req, res) {
   		    	    console.log('Something went wrong!', err);
   		    	  });
 
-  		    	spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
-  		    	  .then(function(data) {
-  		    	    console.log('Created playlist!');
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
-  		    	  });
+  		    	// spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
+  		    	//   .then(function(data) {
+  		    	//     console.log('Created playlist!');
+  		    	//   }, function(err) {
+  		    	//     console.log('Something went wrong!', err);
+  		    	//   });
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
