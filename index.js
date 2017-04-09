@@ -107,12 +107,12 @@ app.post('/webhook/', function (req, res) {
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
 
-  		    	// spotifyApi.getMe()
-  		    	//   .then(function(data) {
-  		    	//     sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
-  		    	//   }, function(err) {
-  		    	//     console.log('Something went wrong getMe!', err);
-  		    	//   });
+  		    	spotifyApi.getMe()
+  		    	  .then(function(data) {
+  		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong getMe!', err);
+  		    	  });
 
   		    	spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
   		    	  .then(function(data) {
