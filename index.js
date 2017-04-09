@@ -68,7 +68,7 @@ app.get('/callback/', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
 
-	        access_toke = body.access_token;
+	        access_token = body.access_token;
 	        refresh_token = body.refresh_token;
 
 	        var options = {
@@ -128,6 +128,7 @@ app.post('/webhook/', function (req, res) {
   		    	request.get(options, function(error, response, body) {
   		    	  var playlistId = body.id;
   		    	  sendTextMessage(sender, "Playlist: " + JSON.stringify(body));
+  		    	  process.exit();
   		    	});
 
   		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
