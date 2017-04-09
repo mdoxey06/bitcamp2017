@@ -7,10 +7,19 @@ const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
+var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
+var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
+var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
+var found = [];
+var currentParty= null;
+
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
+
+var access_token= "";
+var refresh_token= "";
 
 var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
@@ -19,10 +28,6 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 var userObj = "";
-var access_token = "";
-var refresh_token = "";
-var currentParty = null;
-
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -48,6 +53,7 @@ app.get('/webhook/', function (req, res) {
 });
 
 // for Spotify login
+// for Spotify login
 app.get('/callback/', function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -68,7 +74,7 @@ app.get('/callback/', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
 
-	        access_token = body.access_token;
+	        access_token = body.access_token,
 	        refresh_token = body.refresh_token;
 
 	        var options = {
@@ -87,11 +93,6 @@ app.get('/callback/', function(req, res) {
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
-var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
-var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
-var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
-var found = [];
-
 // After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -99,7 +100,7 @@ app.post('/webhook/', function (req, res) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-			let text = event.message.text;
+	    	let text = event.message.text;
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText === 'login') {
 		    	spotifyLogin(sender)
@@ -116,25 +117,25 @@ app.post('/webhook/', function (req, res) {
   		    	var playlistName = partyName + " Playlist";
 
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
+  		    	var strJSON = JSON.stringify(jsonData);
 
   		    	var options = {
   		    	  url: 'https://api.spotify.com/v1/users/' + userObj.id + '/playlists',
-  		    	  headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json' },
-  		    	  data: JSON.stringify(jsonData),
+  		    	  headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'},
+  		    	  data: strJSON,
   		    	  json: true
   		    	};
 
   		    	// use the access token to access the Spotify Web API
   		    	request.post(options, function(error, response, body) {
-  		    	  var playlistId = body.id;
-  		    	  sendTextMessage(sender, "Playlist: " + JSON.stringify(body));
+  		    	  var playlistId= body.id;
+  		    	  sendTextMessage(sender, "ID: " + JSON.stringify(body));
   		    	});
 
-  		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
-  		    	sendTextMessage(sender, "Party created!");
+  		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
   		    else if (lowerCaseText === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
