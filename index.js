@@ -53,7 +53,6 @@ app.get('/webhook/', function (req, res) {
 });
 
 // for Spotify login
-// for Spotify login
 app.get('/callback/', function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
@@ -112,7 +111,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = lowerCaseText.match(createPartyRE)) {
+  		    else if (found == lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
@@ -120,10 +119,9 @@ app.post('/webhook/', function (req, res) {
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
 
-  		    	sendTextMessage(sender, "Auth: " + access_token)
-
   		    	spotifyApi.clientCredentialsGrant()
   		    	        .then(function(data) {
+  		    	        	sendTextMessage(sender, "hello");
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
   		    	              .then(function(data) {
