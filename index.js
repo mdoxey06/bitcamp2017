@@ -12,7 +12,7 @@ var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
-status = false;
+var status = false;
 
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
