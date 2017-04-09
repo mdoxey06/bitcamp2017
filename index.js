@@ -147,7 +147,7 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var scopes = 'user-read-private user-read-email';
+	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming';
 	var loginURL = 'https://accounts.spotify.com/authorize' + 
 	  '?response_type=code' +
 	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
