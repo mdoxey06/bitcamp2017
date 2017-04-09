@@ -83,6 +83,10 @@ app.get('/callback/', function(req, res) {
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
+var createPartyRE = /^createParty \"(.+)\" \"(.+)\"$/
+var joinParty = /^joinParty \"(.+)\" \"(.+)\"$/
+var requestSong = /^requestSong \"(.+)\" \"(.+)\"$/
+
 // After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -93,15 +97,18 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text.toLowerCase().trim()
 		    if (text === 'login') {
 		    	spotifyLogin(sender)
-		    } 
+		    }
 		    else if (text === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
+  		    else if (var found = text.match(createPartyRE)) {
+  		    	sendTextMessage(sender, "username: " + found[0] + "\npassword: " + found[1]);
+  		    }
   		    else if (text === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty <partyName> <password>\n-joinParty <partyName> <password>\n-requestSong <songTitle> <artistName>\n")
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
