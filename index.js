@@ -106,7 +106,7 @@ app.post('/webhook/', function (req, res) {
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
   		    else if (found = text.match(createPartyRE)) {
-  		    	sendTextMessage(sender, "username: " + found[0] + "\npassword: " + found[1]);
+  		    	sendTextMessage(sender, "username: " + found[1] + "\npassword: " + found[2]);
   		    }
   		    else if (text === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
