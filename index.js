@@ -143,7 +143,7 @@ app.post('/webhook/', function (req, res) {
   		    	        		        };
 
   		    	        		        // use the access token to access the Spotify Web API
-  		    	        		        request.get(options, function(error, response, body) {
+  		    	        		        request.post(options, function(error, response, body) {
   		    	        		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
   		    	        		        });
   		    	        }, function(err) {
