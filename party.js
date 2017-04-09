@@ -3,9 +3,9 @@ const Request = require('./request.js')
 
 var method = Party.prototype;
 
-function Party(partyName, pw, hostID, playlist) {
+function Party(partyName, pc, hostID, playlist) {
 	this._partyName = partyName;
-	this._password = pw;
+	this._partyCode = pc;
 	this._hostID = hostID;
 	this._playlist = playlist;
 	this._requests = [];
@@ -19,6 +19,10 @@ method.getPartyName = function() {
 method.getPlaylistURI = function() {
 	return playlist;
 };
+
+method.verifyPartyCode = function(arg) {
+	return this._partyCode === arg;
+}
 
 method.getGuests = function() {
 	var guestIDs = [];

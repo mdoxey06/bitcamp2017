@@ -95,21 +95,39 @@ app.post('/webhook/', function (req, res) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-		    let text = event.message.text.toLowerCase().trim()
-		    if (text === 'login') {
+	    	let text = event.message.text;
+		    let lowerCaseText = text.toLowerCase().trim();
+		    if (lowerCaseText === 'login') {
 		    	spotifyLogin(sender)
 		    }
-		    else if (text === 'userinfo') {
+		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = text.match(createPartyRE)) {
-  		    	sendTextMessage(sender, "username: " + found[1] + "\npassword: " + found[2]);
+  		    else if (found = lowerCaseText.match(createPartyRE)) {
+  		    	var partyName = found[1];
+  		    	var partyCode = found[2];
+
+  		    	spotifyApi.getMe()
+  		    	  .then(function(data) {
+  		    	  	var username = data.body["user_id"];
+  		    	  	sendTextMessage(sender, username);
+  		    	    console.log('Some information about the authenticated user', data.body);
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong!', err);
+  		    	  });
+
+  		    	spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
+  		    	  .then(function(data) {
+  		    	    console.log('Created playlist!');
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong!', err);
+  		    	  });
   		    }
-  		    else if (text === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
+  		    else if (lowerCaseText === 'help') {
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
