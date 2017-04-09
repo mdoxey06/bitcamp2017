@@ -110,14 +110,8 @@ app.post('/webhook/', function (req, res) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
 
-  		    	spotifyApi.getMe()
-  		    	  .then(function(data) {
-  		    	  	var username = data.body["id"];
-  		    	  	sendTextMessage(sender, username);
-  		    	    console.log('Some information about the authenticated user', data.body);
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
-  		    	  });
+  		    	var username = userObj["id"];
+  		    	sendTextMessage(sender, username);
 
   		    	// spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
   		    	//   .then(function(data) {
