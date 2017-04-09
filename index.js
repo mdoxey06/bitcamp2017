@@ -125,7 +125,7 @@ app.post('/webhook/', function (req, res) {
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
   		    	              .then(function(data) {
-  		    	                sendTextMessage.log('Created playlist!');
+  		    	                sendTextMessage(sender, JSON.stringify(data))
   		    	              }, function(err) {
   		    	                console.log('Something went wrong!', err);
   		    	              });
@@ -133,7 +133,7 @@ app.post('/webhook/', function (req, res) {
   		    	            console.log('Something went wrong when retrieving an access token', err);
   		    	        });
 
-  		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
+  		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
