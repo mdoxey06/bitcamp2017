@@ -122,18 +122,18 @@ app.post('/webhook/', function (req, res) {
 
   		    	sendTextMessage(sender, "Auth: " + access_token)
 
-  		    	var playlistOptions = {
-  		    	           url: 'https://api.spotify.com/v1/users/' + playlistName + '/playlists',
-  		    	           headers: {
-  		    	               'Authorization': 'Bearer ' + access_token,
-  		    	           },
-  		    	           body: JSON.stringify({'name': playlistName, 'public': false}),
-  		    	           json: true
-  		    	       }
-
-  		    	       request.post(playlistOptions, function(err, resp, body){
-  		    	           sendTextMessage(sender, JSON.stringify(body))
-  		    	       });
+  		    	spotifyApi.clientCredentialsGrant()
+  		    	        .then(function(data) {
+  		    	            spotifyApi.setAccessToken(data.body['access_token']);
+  		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
+  		    	              .then(function(data) {
+  		    	                sendTextMessage.log('Created playlist!');
+  		    	              }, function(err) {
+  		    	                console.log('Something went wrong!', err);
+  		    	              });
+  		    	        }, function(err) {
+  		    	            console.log('Something went wrong when retrieving an access token', err);
+  		    	        });
 
   		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
