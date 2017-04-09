@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = lowercaseText.match(createPartyRE)) {
+  		    else if (lowercaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
