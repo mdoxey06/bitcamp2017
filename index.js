@@ -12,7 +12,6 @@ var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
-var status = false;
 
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
@@ -91,7 +90,6 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
-    status = true;
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
@@ -106,8 +104,6 @@ app.post('/webhook/', function (req, res) {
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText === 'login') {
 		    	spotifyLogin(sender)
-		    	while (!status) {}
-		    	sendTextMessage (sender, "Welcome, " + userObj['id'] + "!")
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
@@ -115,7 +111,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found ==lowerCaseText.match(createPartyRE)) {
+  		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
