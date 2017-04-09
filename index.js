@@ -99,7 +99,7 @@ passport.use(new SpotifyStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	console.log(profile.id)
-  	return done(err, user);
+  	return done("", profile.id);
     // User.findOrCreate({ spotifyId: profile.id }, function (err, user) {
     // 	console.log("found user!")
     //   	return done(err, user);
