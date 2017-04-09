@@ -23,6 +23,8 @@ var spotifyApi = new SpotifyWebApi({
 var userObj = "";
 
 app.set('port', (process.env.PORT || 5000))
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
