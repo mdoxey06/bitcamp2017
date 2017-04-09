@@ -120,33 +120,18 @@ app.post('/webhook/', function (req, res) {
   		    	var strJSON = JSON.stringify(jsonData);
   		    	console.log ('BEFORE CREDENTIALS')
   		    	spotifyApi.clientCredentialsGrant(access_token)
-  		    	        .then(function(data) {
-  		    	        	    var authOptions = {
-  		    	        		      url: 'https://accounts.spotify.com/api/token',
-  		    	        		      form: {
-  		    	        		        code: code,
-  		    	        		        redirect_uri: redirectUri,
-  		    	        		        grant_type: 'authorization_code'
-  		    	        		      },
-  		    	        		      headers: {
-  		    	        		        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
-  		    	        		      },
-  		    	        		      json: true
-  		    	        	  	}
-  		    	        	    
-  		    	        	    request.post(authOptions, function(error, response, body) {
-  		    	        		        var options = {
-  		    	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-  		    	        		          headers: { 'Authorization': 'Bearer ' + body.access_token, 'Content-Type': 'application/json' },
-  		    	        		          body: {'name': 'playlist', 'public': 'false'},
-  		    	        		          json: true
-  		    	        		        };
+  		    	        .then(function(data) {  		    	        	    
+	        		        var options = {
+	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
+	        		          headers: { 'Authorization': 'Bearer ' + body.access_token, 'Content-Type': 'application/json' },
+	        		          body: {'name': 'playlist', 'public': 'false'},
+	        		          json: true
+	        		        };
 
-  		    	        		        // use the access token to access the Spotify Web API
-  		    	        		        request.post(options, function(error, response, body) {
-  		    	        		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
-  		    	        		        });
-  		    	        		})
+	        		        // use the access token to access the Spotify Web API
+	        		        request.post(options, function(error, response, body) {
+	        		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
+	        		        });
   		    	        }, function(err) {
   		    	            console.log('Something went wrong when retrieving an access token', err);
   		    	        });
