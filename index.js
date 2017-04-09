@@ -112,6 +112,7 @@ app.post('/webhook/', function (req, res) {
 
   		    	var username = userObj["id"];
   		    	sendTextMessage(sender, JSON.stringify(userObj));
+  		    	sendTextMessage(sender, "username: " + username);
 
   		    	// spotifyApi.createPlaylist('thelinmichael', 'My Cool Playlist', { 'public' : false })
   		    	//   .then(function(data) {
