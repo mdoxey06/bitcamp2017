@@ -116,6 +116,14 @@ app.post('/webhook/', function (req, res) {
 
   		    	var playlistName = partyName + " Playlist";
 
+  		    	spotifyApi.getMe()
+  		    	  .then(function(data) {
+  		    	    console.log('Some information about the authenticated user', data.body);
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong!', err);
+  		    	  });
+
+
   		    	spotifyApi.createPlaylist(username, playlistName, { 'public' : false })
   		    	  .then(function(data) {
   		    	    sendTextMessage(sender, "Made playlist " + playlistName)
