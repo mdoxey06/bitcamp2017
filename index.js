@@ -114,6 +114,8 @@ app.post('/webhook/', function (req, res) {
   		    	    console.log('Something went wrong!', err);
   		    	  });
 
+  		    	sendTextMessage(sender, "found songs")
+
   		    	// spotifyApi.getMe()
   		    	//   .then(function(data) {
   		    	//     sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
