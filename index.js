@@ -15,9 +15,9 @@ var redirectUri = 'https://safe-badlands-68520.herokuapp.com/auth/spotify/callba
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
 var spotifyApi = new SpotifyWebApi({
-  clientId : clientId,
-  clientSecret : clientSecret,
-  redirectUri : redirectUri,
+	clientId : clientId,
+	clientSecret : clientSecret,
+	redirectUri : redirectUri,
 });
 
 var user = "";
@@ -68,7 +68,7 @@ passport.use(new SpotifyStrategy({
 ));
 
 app.get('/auth/spotify/', passport.authenticate('spotify', 
-	{scope: ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming'], showDialog: true}),
+	{scope: ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify'], showDialog: true}),
 	function(req, res) {
 	});
 
@@ -113,7 +113,6 @@ app.post('/webhook/', function (req, res) {
   		    	//   }, function(err) {
   		    	//     console.log('Something went wrong getMe!', err);
   		    	//   });
-
 
   		    	spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
   		    	  .then(function(data) {
