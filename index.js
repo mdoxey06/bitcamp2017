@@ -7,6 +7,7 @@ const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
+var status = false
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -80,6 +81,7 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
+    status = true;
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
@@ -93,6 +95,8 @@ app.post('/webhook/', function (req, res) {
 		    let text = event.message.text.toLowerCase().trim()
 		    if (text === 'login') {
 		    	spotifyLogin(sender)
+		    	while(!status) {}
+		    	sendTextMessage(sender, "Welcome, " + userObj["email"])
 		    } 
 		    else if (text === 'userinfo') {
   		    	if (userObj)
@@ -105,7 +109,7 @@ app.post('/webhook/', function (req, res) {
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
-		    }
+`		    }
 	    }
 	    if (event.postback) {
 	    		let text = JSON.stringify(event.postback)
