@@ -20,7 +20,7 @@ var spotifyApi = new SpotifyWebApi({
   redirectUri : redirectUri,
 });
 
-var userObj = "";
+var user = "";
 
 app.set('port', (process.env.PORT || 5000))
 app.use(passport.initialize());
@@ -56,56 +56,14 @@ passport.deserializeUser(function(obj, done) {
 });
 
 // for Spotify login
-// app.get('/callback/', function(req, res) {
-//   // your application requests refresh and access tokens
-//   // after checking the state parameter
-//   	var code = req.query.code || null;
-//     var authOptions = {
-// 	      url: 'https://accounts.spotify.com/api/token',
-// 	      form: {
-// 	        code: code,
-// 	        redirect_uri: redirectUri,
-// 	        grant_type: 'authorization_code'
-// 	      },
-// 	      headers: {
-// 	        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
-// 	      },
-// 	      json: true
-//   	}
-    
-//     request.post(authOptions, function(error, response, body) {
-//       	if (!error && response.statusCode === 200) {
-
-// 	        var access_token = body.access_token,
-// 	            refresh_token = body.refresh_token;
-
-// 	        var options = {
-// 	          url: 'https://api.spotify.com/v1/me',
-// 	          headers: { 'Authorization': 'Bearer ' + access_token },
-// 	          json: true
-// 	        };
-
-// 	        // use the access token to access the Spotify Web API
-// 	        request.get(options, function(error, response, body) {
-// 	          userObj = body;
-// 	        });
-//     	}
-// 	});
-
-// 	res.redirect("https://www.messenger.com/t/414205672270256");
-// });
 passport.use(new SpotifyStrategy({
     clientID: clientId,
     clientSecret: clientSecret,
     callbackURL: "https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/"
   },
   function(accessToken, refreshToken, profile, done) {
-  	console.log(profile.id)
-  	return done("", profile.id);
-    // User.findOrCreate({ spotifyId: profile.id }, function (err, user) {
-    // 	console.log("found user!")
-    //   	return done(err, user);
-    // });
+  	user = profile.id
+  	return done("Couldn't find user", profile.id);
   }
 ));
 
@@ -139,30 +97,18 @@ app.post('/webhook/', function (req, res) {
 		    	spotifyLogin(sender)
 		    }
 		    else if (lowerCaseText === 'userinfo') {
-  		    	if (userObj)
-  		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
+  		    	if (user)
+  		    		sendTextMessage(sender, "You are logged in as " + user)
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
   		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
-
-  		    	// var username = userObj["id"];
-  		    	// sendTextMessage(sender, JSON.stringify(userObj));
-  		    	// sendTextMessage(sender, "username: " + username);
-
   		    	var playlistName = partyName + " Playlist";
 
-  		    	spotifyApi.getMe()
-  		    	  .then(function(data) {
-  		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong getMe!', err);
-  		    	  });
 
-
-  		    	spotifyApi.createPlaylist('mdoxeyumd', playlistName, { 'public' : false })
+  		    	spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
   		    	  .then(function(data) {
   		    	    sendTextMessage(sender, "Made playlist " + playlistName)
   		    	  }, function(err) {
@@ -185,11 +131,6 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	// var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming';
-	// var loginURL = 'https://accounts.spotify.com/authorize' + 
-	//   '?response_type=code' +
-	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
-	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
 	var loginURL = "https://safe-badlands-68520.herokuapp.com/auth/spotify/"
 
 	let messageData = {
