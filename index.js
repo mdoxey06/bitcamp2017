@@ -7,12 +7,12 @@ const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
+var jq = require('jQuery')
 var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
 var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
-
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -119,7 +119,7 @@ app.post('/webhook/', function (req, res) {
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
 
-  		    	$.ajax({
+  		    	jq.ajax({
   		    	       url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
   		    	       method: "POST",
   		    	       data: {
