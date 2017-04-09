@@ -123,15 +123,9 @@ app.post('/webhook/', function (req, res) {
   		    	        .then(function(data) {
   		    	        	sendTextMessage(sender, "hello");
   		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body));
+  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data));
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
-  		    	            spotifyApi.setCredentials({
-  		    	              'accessToken' : data.body['access_token'],
-  		    	              'refreshToken' : data.body['refresh_token'],
-  		    	              'redirectUri' : redirectUri,
-  		    	              'clientId ' : clientId,
-  		    	              'clientSecret' : clientSecret
-  		    	            });
+  		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
   		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : false })
   		    	              .then(function(data) {
