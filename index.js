@@ -56,7 +56,6 @@ passport.deserializeUser(function(obj, done) {
 });
 
 // for Spotify login
-
 passport.use(new SpotifyStrategy({
     clientID: clientId,
     clientSecret: clientSecret,
@@ -64,7 +63,7 @@ passport.use(new SpotifyStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	console.log(profile.id)
-  	return done("", profile.id);
+  	return done("Couldn't find user", profile.id);
   }
 ));
 
