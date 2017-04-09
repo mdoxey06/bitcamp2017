@@ -10,7 +10,7 @@ var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
 
-var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
+var redirectUri = 'https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
@@ -43,6 +43,14 @@ app.get('/webhook/', function (req, res) {
 		res.send(req.query['hub.challenge'])
 	}
 	res.send("Error, wrong token")
+});
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
 });
 
 // for Spotify login
@@ -97,12 +105,12 @@ passport.use(new SpotifyStrategy({
   }
 ));
 
-app.get('/auth/spotify', passport.authenticate('spotify', 
+app.get('/auth/spotify/', passport.authenticate('spotify', 
 	{scope: ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming'], showDialog: true}),
 	function(req, res) {
 	});
 
-app.get('/auth/spotify/callback',
+app.get('/auth/spotify/callback/',
   passport.authenticate('spotify', { failureRedirect: '/auth/spotify' }),
   function(req, res) {
     // Successful authentication, redirect home. 
@@ -178,7 +186,7 @@ function spotifyLogin(sender) {
 	//   '?response_type=code' +
 	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
 	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
-	var loginURL = "https://safe-badlands-68520.herokuapp.com/auth/spotify"
+	var loginURL = "https://safe-badlands-68520.herokuapp.com/auth/spotify/"
 
 	let messageData = {
 	    "attachment": {
