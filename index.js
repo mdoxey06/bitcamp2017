@@ -120,7 +120,8 @@ app.post('/webhook/', function (req, res) {
   		    	var strJSON = JSON.stringify(jsonData);
   		    	console.log ('BEFORE CREDENTIALS')
   		    	spotifyApi.clientCredentialsGrant(access_token)
-  		    	        .then(function(data) {  		    	        	    
+  		    	        .then(function(data) {  
+  		    	        	console.log ('BEFORE CREDENTIALS')		    	        	    
 	        		        var options = {
 	        		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
 	        		          headers: { 'Authorization': 'Bearer ' + body.access_token, 'Content-Type': 'application/json' },
@@ -131,7 +132,7 @@ app.post('/webhook/', function (req, res) {
 	        		        // use the access token to access the Spotify Web API
 	        		        request.post(options, function(error, response, body) {
 	        		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
-	        		        });
+	        		        }).then(function() {console.log("success")}).catch(function {console.log("failure")});
   		    	        }, function(err) {
   		    	            console.log('Something went wrong when retrieving an access token', err);
   		    	        });
