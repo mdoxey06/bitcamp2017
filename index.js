@@ -110,15 +110,15 @@ app.post('/webhook/', function (req, res) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
 
-  		    	var username = userObj["id"];
-  		    	sendTextMessage(sender, JSON.stringify(userObj));
-  		    	sendTextMessage(sender, "username: " + username);
+  		    	// var username = userObj["id"];
+  		    	// sendTextMessage(sender, JSON.stringify(userObj));
+  		    	// sendTextMessage(sender, "username: " + username);
 
   		    	var playlistName = partyName + " Playlist";
 
   		    	spotifyApi.getMe()
   		    	  .then(function(data) {
-  		    	    console.log('Some information about the authenticated user', data.body);
+  		    	    sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
   		    	  }, function(err) {
   		    	    console.log('Something went wrong!', err);
   		    	  });
