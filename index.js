@@ -63,7 +63,7 @@ passport.use(new SpotifyStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
   	console.log(profile.id)
-  	return done("Couldn't find user", profile.id);
+  	return done("", profile.id);
   }
 ));
 
