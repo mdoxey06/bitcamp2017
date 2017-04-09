@@ -99,17 +99,18 @@ app.post('/webhook/', function (req, res) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-		    let text = event.message.text.toLowerCase().trim()
-		    if (text === 'login') {
+	    	let text = event.message.text;
+		    let lowercaseText = text.toLowerCase().trim()
+		    if (lowercaseText === 'login') {
 		    	spotifyLogin(sender)
 		    }
-		    else if (text === 'userinfo') {
+		    else if (lowercaseText === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = text.match(createPartyRE)) {
+  		    else if (found = lowercaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
@@ -132,7 +133,7 @@ app.post('/webhook/', function (req, res) {
   		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
   		    	sendTextMessage(sender, "Party created!");
   		    }
-  		    else if (text === 'help') {
+  		    else if (lowercaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
