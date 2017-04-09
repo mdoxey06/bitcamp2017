@@ -112,7 +112,7 @@ app.post('/webhook/', function (req, res) {
 
   		    	spotifyApi.getMe()
   		    	  .then(function(data) {
-  		    	  	var username = data.body["user_id"];
+  		    	  	var username = data.body["id"];
   		    	  	sendTextMessage(sender, username);
   		    	    console.log('Some information about the authenticated user', data.body);
   		    	  }, function(err) {
