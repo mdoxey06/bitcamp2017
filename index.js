@@ -3,28 +3,28 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const request = require('request')
-const passport = require('passport')
-var SpotifyStrategy = require('passport-spotify/lib/passport-spotify/index').Strategy;
 const app = express()
 var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
 
-var redirectUri = 'https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/',
+var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
 var spotifyApi = new SpotifyWebApi({
-	clientId : clientId,
-	clientSecret : clientSecret,
-	redirectUri : redirectUri,
+  clientId : clientId,
+  clientSecret : clientSecret,
+  redirectUri : redirectUri,
 });
 
-var user = "";
+var userObj = "";
+var access_token = "";
+var refresh_token = "";
+var currentParty = null;
+
 
 app.set('port', (process.env.PORT || 5000))
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
@@ -47,41 +47,49 @@ app.get('/webhook/', function (req, res) {
 	res.send("Error, wrong token")
 });
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
 // for Spotify login
-passport.use(new SpotifyStrategy({
-    clientID: clientId,
-    clientSecret: clientSecret,
-    callbackURL: "https://safe-badlands-68520.herokuapp.com/auth/spotify/callback/"
-  },
-  function(accessToken, refreshToken, profile, done) {
-  	user = profile.id;
-  	return done("", profile.id);
-  }
-));
+app.get('/callback/', function(req, res) {
+  // your application requests refresh and access tokens
+  // after checking the state parameter
+  	var code = req.query.code || null;
+    var authOptions = {
+	      url: 'https://accounts.spotify.com/api/token',
+	      form: {
+	        code: code,
+	        redirect_uri: redirectUri,
+	        grant_type: 'authorization_code'
+	      },
+	      headers: {
+	        'Authorization': 'Basic ' + (new Buffer(clientId + ':' + clientSecret).toString('base64'))
+	      },
+	      json: true
+  	}
+    
+    request.post(authOptions, function(error, response, body) {
+      	if (!error && response.statusCode === 200) {
 
-app.get('/auth/spotify/', passport.authenticate('spotify', 
-	{scope: ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify'], showDialog: true}),
-	function(req, res) {
+	        access_token = body.access_token;
+	        refresh_token = body.refresh_token;
+
+	        var options = {
+	          url: 'https://api.spotify.com/v1/me',
+	          headers: { 'Authorization': 'Bearer ' + access_token },
+	          json: true
+	        };
+
+	        // use the access token to access the Spotify Web API
+	        request.get(options, function(error, response, body) {
+	          userObj = body;
+	        });
+    	}
 	});
 
-app.get('/auth/spotify/callback/',
-  passport.authenticate('spotify', { failureRedirect: '/auth/spotify' }),
-  function(req, res) {
-    // Successful authentication, redirect home. 
-    res.redirect('https://www.messenger.com/t/414205672270256');
-  });
+	res.redirect("https://www.messenger.com/t/414205672270256");
+});
 
-var createPartyRE = /^createparty \"(.+)\" \"(.+)\"$/
-var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
-var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
+var createPartyRE = /^createParty \"(.+)\" \"(.+)\"$/
+var joinParty = /^joinParty \"(.+)\" \"(.+)\"$/
+var requestSong = /^requestSong \"(.+)\" \"(.+)\"$/
 var found = [];
 
 // After user commands
@@ -91,47 +99,41 @@ app.post('/webhook/', function (req, res) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
-	    	let text = event.message.text;
-		    let lowerCaseText = text.toLowerCase().trim();
-		    if (lowerCaseText === 'login') {
+		    let text = event.message.text.toLowerCase().trim()
+		    if (text === 'login') {
 		    	spotifyLogin(sender)
 		    }
-		    else if (lowerCaseText === 'userinfo') {
+		    else if (text === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found = lowerCaseText.match(createPartyRE)) {
+  		    else if (found = text.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
 
-  		    	spotifyApi.searchTracks('track:Alright artist:Kendrick Lamar')
-  		    	  .then(function(data) {
-  		    	    console.log('Search tracks by "Alright" in the track name and "Kendrick Lamar" in the artist name', data.body);
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
-  		    	  });
+  		    	var jsonData = {'name': playlistName, 'public': 'false'};
 
-  		    	sendTextMessage(sender, "found songs")
+  		    	var options = {
+  		    	  url: 'https://api.spotify.com/v1/users/' + userObj.id + '/playlists',
+  		    	  headers: { 'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json' },
+  		    	  data: JSON.stringify(jsonData),
+  		    	  json: true
+  		    	};
 
-  		    	// spotifyApi.getMe()
-  		    	//   .then(function(data) {
-  		    	//     sendTextMessage('Some information about the authenticated user', JSON.stringify(data.body));
-  		    	//   }, function(err) {
-  		    	//     console.log('Something went wrong getMe!', err);
-  		    	//   });
+  		    	// use the access token to access the Spotify Web API
+  		    	request.get(options, function(error, response, body) {
+  		    	  playlistId = body.id;
+  		    	  sendTextMessage(sender, "Playlist: " + JSON.stringify(body));
+  		    	});
 
-  		    	// spotifyApi.createPlaylist(user, playlistName, { 'public' : false })
-  		    	//   .then(function(data) {
-  		    	//     sendTextMessage(sender, "Made playlist " + playlistName)
-  		    	//   }, function(err) {
-  		    	//     console.log('Something went wrong createPlaylist!', err);
-  		    	//   });
+  		    	currentParty = new Party(partyName, partyCode, sender, playlistId);
+  		    	sendTextMessage(sender, "Party created!");
   		    }
-  		    else if (lowerCaseText === 'help') {
-  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
+  		    else if (text === 'help') {
+  		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<password>\"\n-joinParty \"<partyName>\" \"<password>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
@@ -146,7 +148,11 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var loginURL = "https://safe-badlands-68520.herokuapp.com/auth/spotify/"
+	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming playlist-modify';
+	var loginURL = 'https://accounts.spotify.com/authorize' + 
+	  '?response_type=code' +
+	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
+	  '&redirect_uri=' + encodeURIComponent(redirectUri);
 
 	let messageData = {
 	    "attachment": {
