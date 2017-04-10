@@ -86,7 +86,7 @@ app.get('/callback/', function(req, res) {
 
 	        var options = {
 	          url: 'https://api.spotify.com/v1/me',
-	          headers: { 'Authorization': 'Bearer ' + spotifyApi.getAccessToken() },
+	          headers: { 'Authorization': 'Bearer ' + body.access_token },
 	          json: true
 	        };
 
@@ -109,7 +109,7 @@ app.post('/webhook/', function (req, res) {
 	    if (event.message && event.message.text) {
 	    	let text = event.message.text;
 		    let lowerCaseText = text.toLowerCase().trim();
-		    if (lowerCaseText != 'login') {
+		    if (lowerCaseText = 'login') {
 		    	spotifyLogin(sender)
 		    }
 		    else if (lowerCaseText === 'userinfo') {
@@ -134,8 +134,9 @@ app.post('/webhook/', function (req, res) {
   		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
 
   		    	console.log ('BEFORE CREDENTIALS')
-  		    	spotifyApi.clientCredentialsGrant(spotifyApi.getAccessToken())
+  		    	spotifyApi.clientCredentialsGrant(access_token)
   		    	        .then(function(data) {
+  		    	        	/* ***************** METHOD 1 ******************* */
   		    	        	sendTextMessage(sender, "hello");
   		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
   		    	        	sendTextMessage(sender, "data: " + data.body.access_token);
