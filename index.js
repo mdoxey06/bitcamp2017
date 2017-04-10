@@ -12,6 +12,7 @@ var joinParty = /^joinparty \"(.+)\" \"(.+)\"$/
 var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
+var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
 
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
@@ -24,8 +25,7 @@ var refresh_token= "";
 var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
   clientSecret : clientSecret,
-  redirectUri : redirectUri,
-  scopes: 
+  redirectUri : redirectUri
 });
 
 var userObj = "";
@@ -154,26 +154,6 @@ app.post('/webhook/', function (req, res) {
   		    	              });
   		    			});
 
-						/* **************** METHOD 2 ******************* */
-
-  		    	      //   access_token = data.body.access_token,
-  		    	      //   refresh_token = data.body.refresh_token;
-
-		    	        // sendTextMessage(sender, "data: " + JSON.stringify(data.body))  	        	    
-	    		        // var options = {
-	    		        //   url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-	    		        //   headers: { 'Authorization': 'Bearer ' + data.body.access_token, 'Content-Type': 'application/json' },
-	    		        //   body: {'name': 'playlist', 'public': 'false'},
-	    		        //   json: true
-	    		        // };
-	    		        
-	    		        // // use the access token to access the Spotify Web API
-	    		        // request.post(options, function(error, response, body) {
-	    		        //   sendTextMessage(sender, 'success ' + JSON.stringify(body))
-	    		        // }), function(err) {
-  		    	      //       console.log('Something went wrong when retrieving an access token', err);
-  		    	      //   });
-
   		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
   		    else if (lowerCaseText === 'help') {
@@ -192,7 +172,6 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
 	const state = generateRandomString(16);
 	var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
 	// var loginURL = 'https://accounts.spotify.com/authorize' + 
