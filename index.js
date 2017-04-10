@@ -102,15 +102,15 @@ app.get('/callback/', function(req, res) {
 	spotifyApi.authorizationCodeGrant(code)
 	    .then(function(data) {
     	/* ***************** METHOD 1 ******************* */
-    	sendTextMessage(sender, "hello");
+    	//sendTextMessage(sender, "hello");
     	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-    	sendTextMessage(sender, "data: " + data.body.access_token);
+    	//sendTextMessage(sender, "data: " + data.body.access_token);
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
         console.log ('IN CREDENTIALS AFTER SET ACCESSS')
         spotifyApi.createPlaylist(userObj['id'], "Hello World", { public : false })
           .then(function(data) {
-            sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
+            //sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
           }, function(err) {
             console.log('Something went wrong createPlaylist!', err);
           });
