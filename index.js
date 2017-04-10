@@ -130,40 +130,38 @@ app.post('/webhook/', function (req, res) {
   		    	spotifyApi.clientCredentialsGrant(access_token)
   		    	        .then(function(data) {
   		    	        	/* ***************** METHOD 1 ******************* */
-  		    	        	// sendTextMessage(sender, "hello");
-  		    	        	// console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-  		    	        	// sendTextMessage(sender, "data: " + JSON.stringify(data.body));
-  		    	         //    spotifyApi.setAccessToken(data.body['access_token']);
-  		    	         //    spotifyApi.setRefreshToken(data.body['refresh_token']);
-  		    	         //    console.log ('IN CREDENTIALS AFTER SET ACCESSS')
-  		    	         //    spotifyApi.createPlaylist(userObj['id'], playlistName, { 'public' : true })
-  		    	         //      .then(function(data) {
-  		    	         //        sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
-  		    	         //      }, function(err) {
-  		    	         //        console.log('Something went wrong!', err);
-  		    	         //      });
-
-
+  		    	        	sendTextMessage(sender, "hello");
+  		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
+  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body));
+  		    	            spotifyApi.setAccessToken(data.body['access_token']);
+  		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
+  		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
+  		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
+  		    	              .then(function(data) {
+  		    	                sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
+  		    	              }, function(err) {
+  		    	                console.log('Something went wrong!', err);
+  		    	              });
 
 						/* **************** METHOD 2 ******************* */
 
-  		    	        access_token = data.body.access_token,
-  		    	        refresh_token = data.body.refresh_token;
+  		    	      //   access_token = data.body.access_token,
+  		    	      //   refresh_token = data.body.refresh_token;
 
-		    	        sendTextMessage(sender, "data: " + JSON.stringify(data.body))  	        	    
-	    		        var options = {
-	    		          url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
-	    		          headers: { 'Authorization': 'Bearer ' + data.body.access_token, 'Content-Type': 'application/json' },
-	    		          body: {'name': 'playlist', 'public': 'false'},
-	    		          json: true
-	    		        };
+		    	        // sendTextMessage(sender, "data: " + JSON.stringify(data.body))  	        	    
+	    		        // var options = {
+	    		        //   url: 'https://api.spotify.com/v1/users/' + userObj['id'] + '/playlists',
+	    		        //   headers: { 'Authorization': 'Bearer ' + data.body.access_token, 'Content-Type': 'application/json' },
+	    		        //   body: {'name': 'playlist', 'public': 'false'},
+	    		        //   json: true
+	    		        // };
 	    		        
-	    		        // use the access token to access the Spotify Web API
-	    		        request.post(options, function(error, response, body) {
-	    		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
-	    		        }), function(err) {
-  		    	            console.log('Something went wrong when retrieving an access token', err);
-  		    	        });
+	    		        // // use the access token to access the Spotify Web API
+	    		        // request.post(options, function(error, response, body) {
+	    		        //   sendTextMessage(sender, 'success ' + JSON.stringify(body))
+	    		        // }), function(err) {
+  		    	      //       console.log('Something went wrong when retrieving an access token', err);
+  		    	      //   });
 
   		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
