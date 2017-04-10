@@ -13,7 +13,7 @@ var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
 var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
-//var code = "";
+var code = "";
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -64,7 +64,7 @@ app.get('/webhook/', function (req, res) {
 app.get('/callback/', function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
-  	var code = req.query.code || null;
+  	code = req.query.code || null;
 
     var authOptions = {
 	      url: 'https://accounts.spotify.com/api/token',
@@ -96,26 +96,6 @@ app.get('/callback/', function(req, res) {
 	          userObj = body;
 	        });
     	}
-	});
-
-	var access_token = spotifyApi.getAccessToken();
-	spotifyApi.authorizationCodeGrant(code)
-	    .then(function(data) {
-    	/* ***************** METHOD 1 ******************* */
-    	//sendTextMessage(sender, "hello");
-    	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-    	//sendTextMessage(sender, "data: " + data.body.access_token);
-        spotifyApi.setAccessToken(data.body['access_token']);
-        spotifyApi.setRefreshToken(data.body['refresh_token']);
-        console.log ('IN CREDENTIALS AFTER SET ACCESSS')
-        spotifyApi.createPlaylist(userObj['id'], "Hello World", { public : true })
-          .then(function(data) {
-            //sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
-          }, function(err) {
-            console.log('Something went wrong createPlaylist!', err);
-          });
-	}, function(err) {
-		console.log('Something went wrong authorizationCodeGrant!', err);
 	});
 
 	res.redirect("https://www.messenger.com/t/414205672270256");
@@ -154,17 +134,15 @@ app.post('/webhook/', function (req, res) {
   		    	// then I tried to do the post method we tried yesterday -- ran into an UnhandledPromiseRejectionWarning
   		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
 
-  		    	console.log ('BEFORE CREDENTIALS')
+  		    	console.log('BEFORE AUTH CODE GRANT')
   		    	var access_token = spotifyApi.getAccessToken();
   		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
 	    	        	/* ***************** METHOD 1 ******************* */
-	    	        	sendTextMessage(sender, "hello");
-	    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-	    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
+	    	            console.log('IN CREDENTIALS BEFORE CREATE PLAYLIST')
 	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
 	    	              .then(function(data) {
 	    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
