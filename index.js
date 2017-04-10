@@ -138,10 +138,11 @@ app.post('/webhook/', function (req, res) {
   		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
   		    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
   		    	              .then(function(data) {
-  		    	                sendTextMessage(sender, "create playlist: " + JSON.stringify(data))
+  		    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
   		    	              }, function(err) {
   		    	                console.log('Something went wrong!', err);
   		    	              });
+  		    			});
 
 						/* **************** METHOD 2 ******************* */
 
