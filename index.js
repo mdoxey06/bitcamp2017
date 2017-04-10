@@ -13,7 +13,7 @@ var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
 var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
-var code = "";
+
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -129,16 +129,13 @@ app.post('/webhook/', function (req, res) {
 
 
   		    	// In case you get a chance to look at this later: 
-  		    	// I tried to use the clientCredentialsGrant to generate another access_token
-  		    	// and then within that, use the createPlaylist method -- ran into a 403 error or something
-  		    	// then I tried to do the post method we tried yesterday -- ran into an UnhandledPromiseRejectionWarning
-  		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
+  		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
+  		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
 
   		    	console.log ('BEFORE CREDENTIALS')
   		    	var access_token = spotifyApi.getAccessToken();
-  		    	spotifyApi.authorizationCodeGrant(code)
+  		    	spotifyApi.authorizationCodeGrant(access_token)
   		    	    .then(function(data) {
-	    	        	/* ***************** METHOD 1 ******************* */
 	    	        	sendTextMessage(sender, "hello");
 	    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
