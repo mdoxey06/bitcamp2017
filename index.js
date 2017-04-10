@@ -13,7 +13,7 @@ var requestSong = /^requestsong \"(.+)\" \"(.+)\"$/
 var found = [];
 var currentParty= null;
 var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
-
+var code = "";
 
 var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
@@ -64,7 +64,8 @@ app.get('/webhook/', function (req, res) {
 app.get('/callback/', function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
-  	var code = req.query.code || null;
+  	code = req.query.code || null;
+
     var authOptions = {
 	      url: 'https://accounts.spotify.com/api/token',
 	      form: {
@@ -135,7 +136,7 @@ app.post('/webhook/', function (req, res) {
 
   		    	console.log ('BEFORE CREDENTIALS')
   		    	var access_token = spotifyApi.getAccessToken();
-  		    	spotifyApi.authorizationCodeGrant(access_token)
+  		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
 	    	        	/* ***************** METHOD 1 ******************* */
 	    	        	sendTextMessage(sender, "hello");
