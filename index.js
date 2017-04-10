@@ -25,6 +25,7 @@ var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
   clientSecret : clientSecret,
   redirectUri : redirectUri,
+  scopes: 
 });
 
 var userObj = "";
@@ -43,6 +44,15 @@ app.get('/', function (req, res) {
 })
 
 const token = "EAAStcXwYvj0BAHhgZAeyZBwBhyYIqX1IPEk5CawRCcbZCJdk0OSzqcfvAk2UtdYaBaKs2DZClTajYafrtUEhJsSTKqSBSoPEnMPtEZCOQ46kvOQ3sEFYPTZAFswRG8AAdygYhO6NnCU3yLst38n6exStKyZCF9HMTuwebwSstAs0QZDZD"
+
+var generateRandomString = function(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
@@ -182,11 +192,13 @@ app.post('/webhook/', function (req, res) {
 })
 
 function spotifyLogin(sender) {
-	var scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-private streaming playlist-modify playlist-modify-public';
-	var loginURL = 'https://accounts.spotify.com/authorize' + 
-	  '?response_type=code' +
-	  '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
-	  '&redirect_uri=' + encodeURIComponent(redirectUri);
+	var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
+	const state = generateRandomString(16);
+	var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
+	// var loginURL = 'https://accounts.spotify.com/authorize' + 
+	//   '?response_type=code' +
+	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
+	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
 
 	let messageData = {
 	    "attachment": {
@@ -197,7 +209,7 @@ function spotifyLogin(sender) {
 			    "buttons": [
 			    	{
 					    "type": "web_url",
-					    "url": loginURL,
+					    "url": authorizeURL,
 					    "title": "Log In"
 					}
 			    ]
