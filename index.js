@@ -53,6 +53,7 @@ var generateRandomString = function(length) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
+}
 
 // for Facebook verification
 app.get('/webhook/', function (req, res) {
