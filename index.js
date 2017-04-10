@@ -19,9 +19,6 @@ var redirectUri = 'https://safe-badlands-68520.herokuapp.com/callback/',
     clientId = 'f13b2795eee8443a9eef41050f0054a2',
     clientSecret = '927c7af2338f4a7eb371884a436446a7';
 
-var access_token= "";
-var refresh_token= "";
-
 var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
   clientSecret : clientSecret,
@@ -84,8 +81,8 @@ app.get('/callback/', function(req, res) {
     request.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
 
-	        access_token = body.access_token,
-	        refresh_token = body.refresh_token;
+      		spotifyApi.setAccessToken(body.access_token)
+      		spotifyApi.setRefreshToken(body.refresh_token)
 
 	        var options = {
 	          url: 'https://api.spotify.com/v1/me',
@@ -143,7 +140,7 @@ app.post('/webhook/', function (req, res) {
   		    	        	/* ***************** METHOD 1 ******************* */
   		    	        	sendTextMessage(sender, "hello");
   		    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
-  		    	        	sendTextMessage(sender, "data: " + JSON.stringify(data.body));
+  		    	        	sendTextMessage(sender, "data: " + data.body.access_token);
   		    	            spotifyApi.setAccessToken(data.body['access_token']);
   		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
   		    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
