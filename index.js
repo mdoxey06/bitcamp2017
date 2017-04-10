@@ -98,6 +98,23 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
+	  		    	console.log('BEFORE AUTHORIZATION CODE GRANT')
+	  		    	spotifyApi.authorizationCodeGrant(code)
+	  		    	    .then(function(data) {
+		    	            spotifyApi.setAccessToken(data.body['access_token']);
+		    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
+		    	            console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
+		    	            spotifyApi.createPlaylist(userObj['id'], 'hello world new playlist', { public : false })
+		    	              .then(function(data) {
+		    	              	// var playlistId = data.body.id
+		    	                console.log("success! created playlist: " + JSON.stringify(data))
+		    	              }, function(err) {
+		    	                console.log('Something went wrong createPlaylist!', err);
+		    	              });
+	  		    	}, function(err) {
+	    			console.log('Something went wrong authorizationCodeGrant!', err);
+	  				});
+
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
@@ -132,15 +149,15 @@ app.post('/webhook/', function (req, res) {
   		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
   		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
 
-  		    	console.log ('BEFORE AUTHORIZATION CODE GRANT')
+  		    	console.log('BEFORE AUTHORIZATION CODE GRANT')
   		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
 	    	        	sendTextMessage(sender, "hello");
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-	    	            console.log ('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
-	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
+	    	            console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
+	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
 	    	              .then(function(data) {
 	    	              	// var playlistId = data.body.id
 	    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
@@ -171,10 +188,6 @@ app.post('/webhook/', function (req, res) {
 function spotifyLogin(sender) {
 	const state = generateRandomString(16);
 	var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
-	// var loginURL = 'https://accounts.spotify.com/authorize' + 
-	//   '?response_type=code' +
-	//   '&client_id=' + clientId + '&scope=' + encodeURIComponent(scopes) +
-	//   '&redirect_uri=' + encodeURIComponent(redirectUri);
 
 	let messageData = {
 	    "attachment": {
