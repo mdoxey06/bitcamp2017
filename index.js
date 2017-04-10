@@ -162,6 +162,9 @@ app.post('/webhook/', function (req, res) {
 	    		        request.post(options, function(error, response, body) {
 	    		          sendTextMessage(sender, 'success ' + JSON.stringify(body))
 	    		        });
+  		    	        }, function(err) {
+  		    	            console.log('Something went wrong when retrieving an access token', err);
+  		    	        });
 
   		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
