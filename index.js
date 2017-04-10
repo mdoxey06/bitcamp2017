@@ -127,7 +127,6 @@ app.post('/webhook/', function (req, res) {
   		    	var jsonData = {'name': playlistName, 'public': 'false'};
   		    	var strJSON = JSON.stringify(jsonData);
 
-
   		    	// In case you get a chance to look at this later: 
   		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
   		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
