@@ -135,8 +135,7 @@ app.post('/webhook/', function (req, res) {
 
   		    	console.log ('BEFORE CREDENTIALS')
   		    	var access_token = spotifyApi.getAccessToken();
-  		    	sendTextMessage(sender, access_token);
-  		    	spotifyApi.clientCredentialsGrant(access_token)
+  		    	spotifyApi.authorizationCodeGrant(access_token)
   		    	        .then(function(data) {
   		    	        	/* ***************** METHOD 1 ******************* */
   		    	        	sendTextMessage(sender, "hello");
