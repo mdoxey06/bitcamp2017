@@ -134,6 +134,8 @@ app.post('/webhook/', function (req, res) {
   		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
 
   		    	console.log ('BEFORE CREDENTIALS')
+  		    	var access_token = spotifyApi.getAccessToken();
+  		    	sendTextMessage(sender, access_token);
   		    	spotifyApi.clientCredentialsGrant(access_token)
   		    	        .then(function(data) {
   		    	        	/* ***************** METHOD 1 ******************* */
