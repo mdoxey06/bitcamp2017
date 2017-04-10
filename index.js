@@ -108,7 +108,7 @@ app.get('/callback/', function(req, res) {
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
         console.log ('IN CREDENTIALS AFTER SET ACCESSS')
-        spotifyApi.createPlaylist(userObj['id'], "Hello World", { public : false })
+        spotifyApi.createPlaylist(userObj['id'], "Hello World", { public : true })
           .then(function(data) {
             //sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
           }, function(err) {
