@@ -110,7 +110,7 @@ app.post('/webhook/', function (req, res) {
 	    	let text = event.message.text;
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText != 'login') {
-		    	spotifyLogin(sender)
+		    	//spotifyLogin(sender)
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
@@ -134,7 +134,7 @@ app.post('/webhook/', function (req, res) {
   		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
 
   		    	console.log ('BEFORE CREDENTIALS')
-  		    	spotifyApi.clientCredentialsGrant(access_token)
+  		    	spotifyApi.clientCredentialsGrant(spotifyApi.getAccessToken())
   		    	        .then(function(data) {
   		    	        	/* ***************** METHOD 1 ******************* */
   		    	        	sendTextMessage(sender, "hello");
