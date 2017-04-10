@@ -132,18 +132,17 @@ app.post('/webhook/', function (req, res) {
   		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
   		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
 
-  		    	console.log ('BEFORE CREDENTIALS')
-  		    	var access_token = spotifyApi.getAccessToken();
-  		    	spotifyApi.authorizationCodeGrant(access_token)
+  		    	console.log ('BEFORE AUTHORIZATION CODE GRANT')
+  		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
 	    	        	sendTextMessage(sender, "hello");
-	    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-	    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
+	    	            console.log ('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
 	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
 	    	              .then(function(data) {
+	    	              	// var playlistId = data.body.id
 	    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
 	    	              }, function(err) {
 	    	                console.log('Something went wrong createPlaylist!', err);
