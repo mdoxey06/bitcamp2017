@@ -134,15 +134,17 @@ app.post('/webhook/', function (req, res) {
   		    	// then I tried to do the post method we tried yesterday -- ran into an UnhandledPromiseRejectionWarning
   		    	// but this doesn't cause the bot to do that slow infinite loop so that's somewhat good?
 
-  		    	console.log('BEFORE AUTH CODE GRANT')
+  		    	console.log ('BEFORE CREDENTIALS')
   		    	var access_token = spotifyApi.getAccessToken();
   		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
 	    	        	/* ***************** METHOD 1 ******************* */
+	    	        	sendTextMessage(sender, "hello");
+	    	        	console.log ('IN CREDENTIALS BEFORE SET ACCESSS')
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-	    	            console.log('IN CREDENTIALS BEFORE CREATE PLAYLIST')
+	    	            console.log ('IN CREDENTIALS AFTER SET ACCESSS')
 	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : true })
 	    	              .then(function(data) {
 	    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
