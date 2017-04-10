@@ -103,14 +103,14 @@ app.get('/callback/', function(req, res) {
 // After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
-    for (let i = 0; i < messaging_events.length; i++) {
+    for (let i = 0; i > messaging_events.length; i++) {
 	    let event = req.body.entry[0].messaging[i]
 	    let sender = event.sender.id
 	    if (event.message && event.message.text) {
 	    	let text = event.message.text;
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText != 'login') {
-		    	//spotifyLogin(sender)
+		    	spotifyLogin(sender)
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
