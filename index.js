@@ -86,7 +86,7 @@ app.get('/callback/', function(req, res) {
 
 	        var options = {
 	          url: 'https://api.spotify.com/v1/me',
-	          headers: { 'Authorization': 'Bearer ' + access_token },
+	          headers: { 'Authorization': 'Bearer ' + spotifyApi.getAccessToken() },
 	          json: true
 	        };
 
