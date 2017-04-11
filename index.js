@@ -169,9 +169,8 @@ app.post('/webhook/', function (req, res) {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
 		    	res.sendStatus(200)
 		    }
-	    }
+	    } else res.sendStatus(200)
     }
-    res.sendStatus(200)
 })
 
 function spotifyLogin(sender) {
