@@ -161,9 +161,9 @@ app.post('/webhook/', function (req, res) {
   		    	// I would like to add this functionality in case playlist could not be created,
   		    	// but adding this causes it to be sent first, followed by a successful playlist creation
   		    	// check logs -- authorizationCodeGrant fails the first time, then is successful second time...not sure why
-  		    	// else {
-  		    	// 	sendTextMessage(sender, "Party playlist could not be created, login and try again!");
-  		    	// }
+  		    	else {
+  		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
+  		    	}
   		    	res.sendStatus(200)
   		    }
   		    else if (found = text.match(requestSongRE)) {
