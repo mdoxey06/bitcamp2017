@@ -167,9 +167,9 @@ app.post('/webhook/', function (req, res) {
   		    	res.sendStatus(200)
   		    }
   		    else if (found = text.match(requestSongRE)) {
-  		   		spotifyApi.searchTracks('artist:Love')
+  		   		spotifyApi.searchTracks('Love')
   		    	  .then(function(data) {
-  		    	    console.log('Search tracks by "Love" in the artist name', data.body);
+  		    	    console.log('Search tracks by "Love":', JSON.stringify(data.body));
   		    	  }, function(err) {
   		    	    console.log('Something went wrong!', err);
   		    	});
