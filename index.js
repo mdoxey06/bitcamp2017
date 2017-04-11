@@ -98,7 +98,7 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
-	console.log('BEFORE AUTHORIZATION CODE GRANT')
+	console.log(req.query.code)
 	spotifyApi.authorizationCodeGrant(req.query.code)
 	    .then(function(data) {
     	// sendTextMessage(sender, "hello");
