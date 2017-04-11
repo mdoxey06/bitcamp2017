@@ -122,7 +122,6 @@ app.post('/webhook/', function (req, res) {
   		    	res.sendStatus(200)
   		    }
   		    else if (found = text.match(createPartyRE)) {
-  		    	// var partyName = titleCase(found[1]);
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
