@@ -106,7 +106,7 @@ app.get('/callback/', function(req, res) {
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
         console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
-        spotifyApi.createPlaylist(userObj['id'], 'hello world', { public : false })
+        spotifyApi.createPlaylist(userObj['id'], 'hello world', { 'public' : false })
           .then(function(data) {
           	// var playlistId = data.body.id
             console.log("success! created playlist: " + JSON.stringify(data.body))
