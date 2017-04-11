@@ -138,7 +138,7 @@ app.post('/webhook/', function (req, res) {
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
   		    	}, function(err) {
-    			console.log('Something went wrong authorizationCodeGrant!', err);
+    				console.log('Something went wrong authorizationCodeGrant!', err);
   				});
 
   		    	var playlistId = "";
@@ -153,11 +153,12 @@ app.post('/webhook/', function (req, res) {
 
   		    	if (playlistId) {
   		    		currentParty= new Party(partyName, partyCode, sender, playlistId);
-  		    		res.sendStatus(200);
+  		    		// res.sendStatus(200);
   		    	}
   		    	else {
   		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
   		    	}
+  		    	res.sendStatus(200);
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
@@ -165,10 +166,6 @@ app.post('/webhook/', function (req, res) {
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
 		    }
-	    }
-	    if (event.postback) {
-	    		let text = JSON.stringify(event.postback)
-	      	    sendTextMessage(sender, "Postback received: " + text)
 	    }
     }
     res.sendStatus(200)
