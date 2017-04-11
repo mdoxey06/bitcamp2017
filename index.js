@@ -119,7 +119,7 @@ app.post('/webhook/', function (req, res) {
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
-  		    else if (found != lowerCaseText.match(createPartyRE)) {
+  		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
@@ -139,15 +139,19 @@ app.post('/webhook/', function (req, res) {
     			console.log('Something went wrong authorizationCodeGrant!', err);
   				});
 
+  		    	var playlistId = "";
+
   		    	spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
   		    	  .then(function(data) {
-  		    	  	var playlistId = data.body.id
+  		    	  	playlistId = data.body.id
   		    	    sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data.body.id))
   		    	  }, function(err) {
   		    	    console.log('Something went wrong createPlaylist!', err);
   		    	  });
 
-  		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
+  		    	if (playlistId)
+  		    		currentParty= new Party(partyName, partyCode, sender, playlistId);
+  		    	res.sendStatus(200);
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
