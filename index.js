@@ -153,22 +153,23 @@ app.post('/webhook/', function (req, res) {
 
   		    	if (playlistId) {
   		    		currentParty= new Party(partyName, partyCode, sender, playlistId);
-  		    		// res.sendStatus(200);
+  		    		res.sendStatus(200);
   		    	}
   		    	else {
   		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
   		    	}
-  		    	res.sendStatus(200);
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
+  		    	res.sendStatus(200)
   		    }
 		    else {
 		    	sendTextMessage(sender, text + " is not a valid command. Type 'help' for list of commands.")
+		    	res.sendStatus(200)
 		    }
 	    }
     }
-    res.sendStatus(200)
+
 })
 
 function spotifyLogin(sender) {
