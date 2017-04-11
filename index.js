@@ -98,7 +98,8 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
-	console.log(req.query.code)
+	console.log("FROM PARAMETER: " + req.query.code)
+	console.log("VARIABLE: " + code)
 	spotifyApi.authorizationCodeGrant(req.query.code)
 	    .then(function(data) {
     	// sendTextMessage(sender, "hello");
