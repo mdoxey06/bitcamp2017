@@ -156,13 +156,13 @@ app.post('/webhook/', function (req, res) {
 
   		    	if (playlistId) {
   		    		currentParty = new Party(partyName, partyCode, sender, playlistId);
-  		    	// }
+  		    	 }
   		    	// else {
   		    	// 	sendTextMessage(sender, "Party playlist could not be created, login and try again!");
   		    	// }
   		    	res.sendStatus(200)
   		    }
-  		    //else if (found = lower)
+  		    //else if (found = text.match(requestSongRE))
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    	res.sendStatus(200)
