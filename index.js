@@ -8,8 +8,8 @@ var querystring = require('qs');
 var Party = require("./party.js")
 const SpotifyWebApi = require('spotify-web-api-node');
 var createPartyRE = /^createParty \"(.+)\" \"(.+)\"$/i
-var joinParty = /^joinParty \"(.+)\" \"(.+)\"$/i
-var requestSong = /^requestSong \"(.+)\" \"(.+)\"$/i
+var joinPartyRE = /^joinParty \"(.+)\" \"(.+)\"$/i
+var requestSongRE = /^requestSong \"(.+)\" \"(.+)\"$/i
 var found = [];
 var currentParty= null;
 var scopes = ['user-read-private', 'user-read-email', 'playlist-read-private', 'playlist-modify-private', 'streaming', 'playlist-modify', 'playlist-modify-public']
@@ -157,7 +157,7 @@ app.post('/webhook/', function (req, res) {
   		    	if (playlistId) {
   		    		currentParty = new Party(partyName, partyCode, sender, playlistId);
   		    	}
-  		    	
+
   		    	// I would like to add this functionality in case playlist could not be created,
   		    	// but adding this causes it to be sent first, followed by a successful playlist creation
   		    	// check logs -- authorizationCodeGrant fails the first time, then is successful second time...not sure why
