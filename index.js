@@ -130,8 +130,9 @@ app.post('/webhook/', function (req, res) {
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    	res.sendStatus(200)
   		    }
-  		    else if (found = lowerCaseText.match(createPartyRE)) {
-  		    	var partyName = titleCase(found[1]);
+  		    else if (found = text.match(createPartyRE)) {
+  		    	// var partyName = titleCase(found[1]);
+  		    	var partyName = found[1];
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
 
@@ -154,13 +155,14 @@ app.post('/webhook/', function (req, res) {
   		    	  });
 
   		    	if (playlistId) {
-  		    		currentParty= new Party(partyName, partyCode, sender, playlistId);
-  		    	}
-  		    	else {
-  		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
-  		    	}
+  		    		currentParty = new Party(partyName, partyCode, sender, playlistId);
+  		    	// }
+  		    	// else {
+  		    	// 	sendTextMessage(sender, "Party playlist could not be created, login and try again!");
+  		    	// }
   		    	res.sendStatus(200)
   		    }
+  		    //else if (found = lower)
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    	res.sendStatus(200)
