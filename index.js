@@ -98,6 +98,25 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
+	console.log('BEFORE AUTHORIZATION CODE GRANT')
+	spotifyApi.authorizationCodeGrant(req.query.code)
+	    .then(function(data) {
+    	sendTextMessage(sender, "hello");
+    	sendTextMessage(sender, "data: " + data.body.access_token);
+        spotifyApi.setAccessToken(data.body['access_token']);
+        spotifyApi.setRefreshToken(data.body['refresh_token']);
+        console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
+        spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
+          .then(function(data) {
+          	// var playlistId = data.body.id
+            sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data.body))
+          }, function(err) {
+            console.log('Something went wrong createPlaylist!', err);
+          });
+	}, function(err) {
+console.log('Something went wrong authorizationCodeGrant!', err);
+	});
+
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
