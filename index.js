@@ -106,17 +106,17 @@ app.get('/callback/', function(req, res) {
     	// sendTextMessage(sender, "data: " + data.body.access_token);
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
-        console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
-        spotifyApi.createPlaylist(userObj['id'], 'hello world', { 'public' : false })
-          .then(function(data) {
-          	// var playlistId = data.body.id
-            console.log("success! created playlist: " + JSON.stringify(data.body))
-          }, function(err) {
-            console.log('Something went wrong createPlaylist!', err);
-          });
 	}, function(err) {
 console.log('Something went wrong authorizationCodeGrant!', err);
 	});
+	console.log('BEFORE CREATE PLAYLIST')
+	spotifyApi.createPlaylist(userObj['id'], 'hello world', { 'public' : false })
+	  .then(function(data) {
+	  	// var playlistId = data.body.id
+	    console.log("success! created playlist: " + JSON.stringify(data.body))
+	  }, function(err) {
+	    console.log('Something went wrong createPlaylist!', err);
+	  });
 
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
