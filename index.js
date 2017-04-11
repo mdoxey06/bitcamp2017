@@ -107,7 +107,7 @@ app.get('/callback/', function(req, res) {
         spotifyApi.setAccessToken(data.body['access_token']);
         spotifyApi.setRefreshToken(data.body['refresh_token']);
 	}, function(err) {
-console.log('Something went wrong authorizationCodeGrant!', err);
+		console.log('Something went wrong authorizationCodeGrant!', err);
 	});
 	console.log('BEFORE CREATE PLAYLIST')
 	spotifyApi.createPlaylist(userObj['id'], 'hello world', { 'public' : false })
@@ -158,17 +158,19 @@ app.post('/webhook/', function (req, res) {
 	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-	    	            console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
-	    	            spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
-	    	              .then(function(data) {
-	    	              	// var playlistId = data.body.id
-	    	                sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
-	    	              }, function(err) {
-	    	                console.log('Something went wrong createPlaylist!', err);
-	    	              });
+
   		    	}, function(err) {
     			console.log('Something went wrong authorizationCodeGrant!', err);
   				});
+
+  		    	console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
+  		    	spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
+  		    	  .then(function(data) {
+  		    	  	var playlistId = data.body.id
+  		    	    sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong createPlaylist!', err);
+  		    	  });
 
   		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
