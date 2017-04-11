@@ -121,7 +121,7 @@ app.post('/webhook/', function (req, res) {
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText == 'login') {
 		    	spotifyLogin(sender)
-		    	res.sendstatus(200)
+		    	res.sendStatus(200)
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
