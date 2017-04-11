@@ -100,7 +100,7 @@ app.get('/callback/', function(req, res) {
 
 	console.log("FROM PARAMETER: " + req.query.code)
 	console.log("VARIABLE: " + code)
-	spotifyApi.authorizationCodeGrant(req.query.code)
+	spotifyApi.authorizationCodeGrant(code)
 	    .then(function(data) {
     	// sendTextMessage(sender, "hello");
     	// sendTextMessage(sender, "data: " + data.body.access_token);
