@@ -121,14 +121,13 @@ app.post('/webhook/', function (req, res) {
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText == 'login') {
 		    	spotifyLogin(sender)
-		    	res.sendStatus(200);
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
-  		    	res.sendStatus(200);
+  		    	res.sendStatus(200)
   		    }
   		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = titleCase(found[1]);
@@ -155,11 +154,11 @@ app.post('/webhook/', function (req, res) {
 
   		    	if (playlistId) {
   		    		currentParty= new Party(partyName, partyCode, sender, playlistId);
-  		    		res.sendStatus(200);
   		    	}
   		    	else {
   		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
   		    	}
+  		    	res.sendStatus(200)
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
@@ -171,7 +170,7 @@ app.post('/webhook/', function (req, res) {
 		    }
 	    }
     }
-
+    res.sendStatus(200)
 })
 
 function spotifyLogin(sender) {
