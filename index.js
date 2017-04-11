@@ -156,13 +156,24 @@ app.post('/webhook/', function (req, res) {
 
   		    	if (playlistId) {
   		    		currentParty = new Party(partyName, partyCode, sender, playlistId);
-  		    	 }
+  		    	}
+  		    	
+  		    	// I would like to add this functionality in case playlist could not be created,
+  		    	// but adding this causes it to be sent first, followed by a successful playlist creation
+  		    	// check logs -- authorizationCodeGrant fails the first time, then is successful second time...not sure why
   		    	// else {
   		    	// 	sendTextMessage(sender, "Party playlist could not be created, login and try again!");
   		    	// }
   		    	res.sendStatus(200)
   		    }
-  		    //else if (found = text.match(requestSongRE))
+  		    else if (found = text.match(requestSongRE)) {
+  		    	spotifyApi.searchTracks('artist:Love')
+  		    	  .then(function(data) {
+  		    	    console.log('Search tracks by "Love" in the artist name', data.body);
+  		    	  }, function(err) {
+  		    	    console.log('Something went wrong!', err);
+  		    	  });
+  		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
   		    	res.sendStatus(200)
