@@ -101,15 +101,6 @@ app.get('/callback/', function(req, res) {
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
-// from FreeCodeCamp.com
-function titleCase(str) {
-  str = str.toLowerCase().split(' ');
-  for (var i = 0; i < str.length; i++) {
-    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
-  }
-  return str.join(' ');
-}
-
 // After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -161,9 +152,9 @@ app.post('/webhook/', function (req, res) {
   		    	// I would like to add this functionality in case playlist could not be created,
   		    	// but adding this causes it to be sent first, followed by a successful playlist creation
   		    	// check logs -- authorizationCodeGrant fails the first time, then is successful second time...not sure why
-  		    	else {
-  		    		sendTextMessage(sender, "Party playlist could not be created, login and try again!");
-  		    	}
+  		    	// else {
+  		    	// 	sendTextMessage(sender, "Party playlist could not be created, login and try again!");
+  		    	// }
   		    	res.sendStatus(200)
   		    }
   		    else if (found = text.match(requestSongRE)) {
