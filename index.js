@@ -101,6 +101,15 @@ app.get('/callback/', function(req, res) {
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
+// from FreeCodeCamp.com
+function titleCase(str) {
+  str = str.toLowerCase().split(' ');
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+  }
+  return str.join(' ');
+}
+
 // After user commands
 app.post('/webhook/', function (req, res) {
     let messaging_events = req.body.entry[0].messaging
@@ -120,16 +129,9 @@ app.post('/webhook/', function (req, res) {
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
   		    }
   		    else if (found = lowerCaseText.match(createPartyRE)) {
-  		    	var partyName = found[1];
+  		    	var partyName = titleCase(found[1]);
   		    	var partyCode = found[2];
   		    	var playlistName = partyName + " Playlist";
-
-  		    	var jsonData = {'name': playlistName, 'public': 'false'};
-  		    	var strJSON = JSON.stringify(jsonData);
-
-  		    	// In case you get a chance to look at this later: 
-  		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
-  		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
 
   		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
