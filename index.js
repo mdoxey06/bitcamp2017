@@ -98,26 +98,6 @@ app.get('/callback/', function(req, res) {
     	}
 	});
 
-	console.log("FROM PARAMETER: " + req.query.code)
-	console.log("VARIABLE: " + code)
-	spotifyApi.authorizationCodeGrant(code)
-	    .then(function(data) {
-    	// sendTextMessage(sender, "hello");
-    	// sendTextMessage(sender, "data: " + data.body.access_token);
-        spotifyApi.setAccessToken(data.body['access_token']);
-        spotifyApi.setRefreshToken(data.body['refresh_token']);
-	}, function(err) {
-		console.log('Something went wrong authorizationCodeGrant!', err);
-	});
-	console.log('BEFORE CREATE PLAYLIST')
-	spotifyApi.createPlaylist(userObj['id'], 'hello world', { 'public' : false })
-	  .then(function(data) {
-	  	// var playlistId = data.body.id
-	    console.log("success! created playlist: " + JSON.stringify(data.body))
-	  }, function(err) {
-	    console.log('Something went wrong createPlaylist!', err);
-	  });
-
 	res.redirect("https://www.messenger.com/t/414205672270256");
 });
 
@@ -151,28 +131,23 @@ app.post('/webhook/', function (req, res) {
   		    	// I tried to use the authorizationCodeGrant to generate another access_token using code from login
   		    	// and then within that, use the createPlaylist method -- ran into a 403 error - forbidden for some reason...
 
-  		    	console.log('BEFORE AUTHORIZATION CODE GRANT')
   		    	spotifyApi.authorizationCodeGrant(code)
   		    	    .then(function(data) {
-	    	        	sendTextMessage(sender, "hello");
-	    	        	sendTextMessage(sender, "data: " + data.body.access_token);
 	    	            spotifyApi.setAccessToken(data.body['access_token']);
 	    	            spotifyApi.setRefreshToken(data.body['refresh_token']);
-
   		    	}, function(err) {
     			console.log('Something went wrong authorizationCodeGrant!', err);
   				});
 
-  		    	console.log('IN AUTHORIZATION CODE GRANT BEFORE CREATE PLAYLIST')
   		    	spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
   		    	  .then(function(data) {
   		    	  	var playlistId = data.body.id
-  		    	    sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data))
+  		    	    sendTextMessage(sender, "success! created playlist: " + JSON.stringify(data.body.id))
   		    	  }, function(err) {
   		    	    console.log('Something went wrong createPlaylist!', err);
   		    	  });
 
-  		    	//currentParty= new Party(partyName, partyCode, sender, playlistId);
+  		    	currentParty= new Party(partyName, partyCode, sender, playlistId);
   		    }
   		    else if (lowerCaseText === 'help') {
   		    	sendTextMessage(sender, "-login\n-userInfo\n-createParty \"<partyName>\" \"<partyCode>\"\n-joinParty \"<partyName>\" \"<partyCode>\"\n-requestSong \"<songTitle>\" \"<artistName>\"\n")
