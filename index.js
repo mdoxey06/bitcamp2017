@@ -121,12 +121,14 @@ app.post('/webhook/', function (req, res) {
 		    let lowerCaseText = text.toLowerCase().trim();
 		    if (lowerCaseText == 'login') {
 		    	spotifyLogin(sender)
+		    	res.sendStatus(200);
 		    }
 		    else if (lowerCaseText === 'userinfo') {
   		    	if (userObj)
   		    		sendTextMessage(sender, "You are logged in as " + userObj["email"])
   		    	else
   		    		sendTextMessage(sender, "You are not logged in. Type 'login' to get started!")
+  		    	res.sendStatus(200);
   		    }
   		    else if (found = lowerCaseText.match(createPartyRE)) {
   		    	var partyName = titleCase(found[1]);
