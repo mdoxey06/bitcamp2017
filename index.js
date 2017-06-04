@@ -158,10 +158,11 @@ app.post('/webhook/', function (req, res) {
   		    }
   		    else if (found = text.match(requestSongRE)) {
 
-  		   		spotifyApi.searchTracks('Love')
+  		   		spotifyApi.searchTracks("Love")
   		    	  .then(function(data) {
-  		    	  	var tracks = data.body.tracks.items;
-  		    	  	sendTextMessage(JSON.stringify(tracks));
+  		    	  	sendTextMessage("searched songs");
+  		    	  	//var tracks = data.body.tracks.items;
+  		    	  	//sendTextMessage(JSON.stringify(tracks));
   		    	  	// var names = [];
   		    	  	// tracks.foreach(function(t) {names.push(t)})
   		    	  	// console.log(names)
