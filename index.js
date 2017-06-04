@@ -158,7 +158,7 @@ app.post('/webhook/', function (req, res) {
   		    }
   		    else if (found = text.match(requestSongRE)) {
   		    	let searchString = "track:" +  found[1] + " artist:" + found[2];
-  		    	sendTextMessage(sender, searchString;
+  		    	sendTextMessage(sender, searchString);
   		   		spotifyApi.searchTracks(searchString)
   		    	  .then(function(data) {
   		    	  	sendTextMessage(sender, "searched songs");
