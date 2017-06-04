@@ -160,12 +160,12 @@ app.post('/webhook/', function (req, res) {
 
   		   		spotifyApi.searchTracks("Love")
   		    	  .then(function(data) {
-  		    	  	sendTextMessage("searched songs");
-  		    	  	//var tracks = data.body.tracks.items;
-  		    	  	//sendTextMessage(JSON.stringify(tracks));
+  		    	  	sendTextMessage(sender, "searched songs");
+  		    	  	var tracks = data.body.tracks.items;
+  		    	  	sendTextMessage(sender, JSON.stringify(tracks));
   		    	  	// var names = [];
   		    	  	// tracks.foreach(function(t) {names.push(t)})
-  		    	  	// console.log(names)
+  		    	  	console.log(names)
   		    	  }, function(err) {
   		    	    console.log('Something went wrong!', err);
   		    	});
