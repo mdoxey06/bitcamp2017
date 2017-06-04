@@ -139,7 +139,7 @@ app.post('/webhook/', function (req, res) {
   		    	spotifyApi.createPlaylist(userObj['id'], playlistName, { public : false })
   		    	  .then(function(data) {
   		    	  	playlistId = data.body.id
-  		    	    sendTextMessage(sender, "Success! Created party playlist: " + JSON.stringify(data.body.url))
+  		    	    sendTextMessage(sender, "Success! Created party playlist: " + JSON.stringify(data.body.external_urls.spotify))
   		    	  }, function(err) {
   		    	    console.log('Something went wrong createPlaylist!', err);
   		    	  });
