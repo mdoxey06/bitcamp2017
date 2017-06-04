@@ -26,6 +26,7 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 var userObj = "";
+var playlistObj = "";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -158,18 +159,30 @@ app.post('/webhook/', function (req, res) {
   		    }
   		    else if (found = text.match(requestSongRE)) {
   		    	let searchString = "track:" +  found[1] + " artist:" + found[2];
-  		    	sendTextMessage(sender, searchString);
-  		   		spotifyApi.searchTracks(searchString)
-  		    	  .then(function(data) {
-  		    	  	sendTextMessage(sender, "searched songs");
-  		    	  	var tracks = data.body.tracks.items;
-  		    	  	sendTextMessage(sender, tracks.length);
-  		    	  	// var names = [];
-  		    	  	// tracks.foreach(function(t) {names.push(t)})
-  		    	  	console.log(names)
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
-  		    	});
+  		    	let trackURI = "";
+				sendTextMessage(sender, searchString);
+					spotifyApi.searchTracks(searchString)
+				  .then(function(data) {
+
+				  	sendTextMessage(sender, "searched songs");
+				  	var tracks = data.body.tracks.items;
+				  	sendTextMessage(sender, tracks.length);
+				  	if (tracks.length === 1)
+				  		trackURI = tracks.items[0].uri;
+				  	// var names = [];
+				  	// tracks.foreach(function(t) {names.push(t)})
+				  	console.log(names)
+				  }, function(err) {
+				    console.log('Something went wrong!', err);
+				});
+
+				  spotifyApi.addTracksToPlaylist(userObj.id, '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
+				    .then(function(data) {
+				      console.log('Added tracks to playlist!');
+				    }, function(err) {
+				      console.log('Something went wrong!', err);
+				    });
+
   		    	res.sendStatus(200);
   		    }
   		    else if (lowerCaseText === 'help') {
