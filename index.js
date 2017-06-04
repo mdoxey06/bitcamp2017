@@ -26,7 +26,7 @@ var spotifyApi = new SpotifyWebApi({
 });
 
 var userObj = "";
-var playlistObj = "";
+var playlistId = "";
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -163,7 +163,6 @@ app.post('/webhook/', function (req, res) {
 				sendTextMessage(sender, searchString);
 					spotifyApi.searchTracks(searchString)
 				  .then(function(data) {
-
 				  	sendTextMessage(sender, "searched songs");
 				  	var tracks = data.body.tracks.items;
 				  	sendTextMessage(sender, tracks.length);
@@ -176,7 +175,7 @@ app.post('/webhook/', function (req, res) {
 				    console.log('Something went wrong!', err);
 				});
 
-				  spotifyApi.addTracksToPlaylist(userObj.id, '5ieJqeLJjjI8iJWaxeBLuK', ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh", "spotify:track:1301WleyT98MSxVHPZCA6M"])
+				  spotifyApi.addTracksToPlaylist(userObj.id, playlistId, [trackURI])
 				    .then(function(data) {
 				      console.log('Added tracks to playlist!');
 				    }, function(err) {
