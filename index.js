@@ -157,15 +157,12 @@ app.post('/webhook/', function (req, res) {
   		    	res.sendStatus(200)
   		    }
   		    else if (found = text.match(requestSongRE)) {
-  		   		spotifyApi.searchTracks('Love')
-  		    	  .then(function(data) {
-  		    	  	var tracks = data.body.tracks.items;
-  		    	  	var names = []
-  		    	  	tracks.foreach(function(t) {names.push(t)})
-  		    	  	console.log(names)
-  		    	  }, function(err) {
-  		    	    console.log('Something went wrong!', err);
-  		    	});
+				spotifyApi.searchTracks('Love')
+				  .then(function(data) {
+				    console.log('Search by "Love"', data.body);
+				  }, function(err) {
+				    console.error(err);
+				  });  
   		    	res.sendStatus(200);
   		    }
   		    else if (lowerCaseText === 'help') {
