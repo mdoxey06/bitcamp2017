@@ -162,7 +162,7 @@ app.post('/webhook/', function (req, res) {
   		    	  .then(function(data) {
   		    	  	sendTextMessage(sender, "searched songs");
   		    	  	var tracks = data.body.tracks.items;
-  		    	  	sendTextMessage(sender, JSON.stringify(tracks));
+  		    	  	sendTextMessage(sender, JSON.stringify(tracks).substring(1,600));
   		    	  	// var names = [];
   		    	  	// tracks.foreach(function(t) {names.push(t)})
   		    	  	console.log(names)
