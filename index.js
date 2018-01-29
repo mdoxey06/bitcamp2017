@@ -80,7 +80,7 @@ app.get('/callback/', function(req, res) {
 	      json: true
   	}
     
-    request.post(authOptions, function(error, response, body) {
+    req.post(authOptions, function(error, response, body) {
       	if (!error && response.statusCode === 200) {
 
       		spotifyApi.setAccessToken(body.access_token)
@@ -93,7 +93,7 @@ app.get('/callback/', function(req, res) {
 	        };
 
 	        // use the access token to access the Spotify Web API
-	        request.get(options, function(error, response, body) {
+	        req.get(options, function(error, response, body) {
 	          userObj = body;
 	        });
     	}
